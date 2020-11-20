@@ -1,0 +1,46 @@
+
+@function rem($value) {
+    @return unquote(($value/1px)/16+"rem");
+}
+  
+
+  $fontBold : 'OpenSans-bold';
+  $fontNormal : 'OpenSans';
+  $fontMedium : 'OpenSans-SemiBold';
+  /*$fontBold : 'HelveticaNeue-bold';
+  $fontNormal : 'HelveticaNeue';
+  $fontMedium : 'HelveticaNeue-medium';*/
+
+  $header-profile : "#2d2d2d";
+
+
+  $bodyColor: "#F3F7FA";
+  $maincolor: "#0F1F54";
+  $mattBlackDark: "#a19aac";
+  $mattRed: "#fff";
+  $mattoogleBar: "#ADADAD";
+  $matIconColor: "#fff";
+  $whiteColor: "#fff";
+  $cancelColor: "#a19aac";
+  $selectBoxBgColor: "#6d547c";
+  
+
+  $easeTime: 0.25s;
+  $margin-top: 56px;
+  $colors: (
+    "mattBlackLight": $maincolor,
+    "mattBlackDark": $mattBlackDark,
+    "mattRed": $mattRed,
+    "matToogleBar": $mattoogleBar
+  );
+  
+  @each $colorName, $colorValue in $colors {
+    .bg-#{$colorName} {
+      background-color: #{$colorValue};
+    }
+    .text-#{$colorName} {
+      color: #{$colorValue};
+    }
+  }
+
+  

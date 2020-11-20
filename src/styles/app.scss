@@ -1,0 +1,392 @@
+/* You can add global styles to this file, and also import other style files */
+@import "bootstrap/bootstrap";
+@import "spinner";
+@import "utils";
+@import "rtl";
+@import "responsive";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+// @import '~ng-drag-drop/style.css';
+// @import "~ng-pick-datetime/assets/style/picker.min.css";
+// @import '~angular-tree-component/dist/angular-tree-component.css';
+// @import '../../node_modules/angular-calendar/css/angular-calendar.css';
+@import "./variables.scss";
+* {
+    font-family: #{$fontNormal};
+}
+
+table {
+    width: 100% !important;
+}
+
+.mat-header-row {
+    border-bottom: 1px double #4a4545;
+}
+
+.mat-header-row .mat-header-cell {
+    font-family: #{$fontBold};
+    letter-spacing: normal;
+    height: 13px;
+    line-height: 1.25;
+    font-weight: bold;
+    font-stretch: normal;
+    color: #4d4d4d;
+}
+
+tr.mat-header-row {
+    height: 45px !important;
+}
+
+a {
+    font-size: 12px !important;
+}
+label {
+    font-size: 10px;
+    font-variant: small-caps;
+    font-family: #{$fontNormal};
+    -webkit-font-smoothing: antialiased;
+    font-weight: medium;
+    color: #4d4d4d;
+}
+.label-style {
+    font-size: 10px;
+    font-variant: small-caps;
+    font-family: #{$fontNormal};
+    -webkit-font-smoothing: antialiased;
+    font-weight: medium;
+    color: #4d4d4d;
+}
+.custom-file-label {
+    font-size: 14px;
+    font-variant: small-caps;
+    font-family: #{$fontNormal};
+    -webkit-font-smoothing: antialiased;
+    font-weight: medium;
+}
+
+.label-style {
+    font-family: #{$fontNormal};
+    font-weight: medium;
+    color: #4d4d4d;
+}
+
+::-webkit-input-placeholder {
+    font-size: 12px;
+    font-weight: normal;
+    color: #727070;
+}
+
+:-moz-placeholder {
+    /* Firefox 18- */
+    font-size: 12px;
+    font-weight: normal;
+    color: #727070;
+}
+
+::-moz-placeholder {
+    /* Firefox 19+ */
+    font-size: 12px;
+    font-weight: normal;
+    color: #727070;
+}
+
+/*New styles*/
+select {
+    font-size: 12px;
+    font-weight: normal;
+    color: #727070;
+}
+
+.dropdown-item {
+    font-family: #{$fontNormal};
+    font-size: 13px !important;
+}
+.dropdown-item:focus, .dropdown-item:hover{
+    color: #{$whiteColor} !important;
+    text-decoration: none !important;
+    background-color: #{$selectBoxBgColor} !important;
+    font-family: #{$fontMedium}!important;
+}
+
+input {
+    font-size: 12px;
+    font-weight: normal;
+    color: #4d4d4d;
+}
+
+tr th {
+    background-color: #{$bodyColor};
+    font-size: 12px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.25;
+    letter-spacing: normal;
+    text-align: center !important;
+    color: #4d4d4d;
+}
+
+tr td {
+    background-color: #fff;
+    font-size: 13px;
+    text-align: center;
+}
+
+p {
+    font-size: 14px;
+}
+
+label {
+    margin-bottom: 0px !important;
+    color: #5c5c5c !important;
+    font-size: 10 px;
+}
+
+.fa-icons {
+    color: #{$maincolor};
+    font-size: 16px;
+}
+
+.leaflet-tooltip-left.myCSSClass::before {
+    // border-left-color: transparent;
+}
+.leaflet-tooltip-right.myCSSClass::before {
+    // border-right-color: transparent;
+}
+.leaflet-tooltip.my-labels {
+    position: absolute;
+    font-size: 0px;
+    background: none;
+    border: none;
+    color: black;
+    box-shadow: none;
+    outline: none;
+    transform: inherit;
+    font-weight: bolder !important;
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    overflow-wrap: break-word !important;
+    // word-break: break-word !important;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    line-height: 0.7 !important;
+}
+
+.groove {
+    height: 690px !important;
+    border: 5px solid #a8a4a4;
+    // -webkit-box-shadow: 3px 3px 3px 3px #ccc; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    // -moz-box-shadow: 3px 3px 3px 3px #ccc; /* Firefox 3.5 - 3.6 */
+    // box-shadow: 3px 3px 3px 3px #ccc;
+}
+
+.toast-container {
+    pointer-events: none;
+    position: fixed;
+    z-index: 999999;
+    text-align: center !important;
+}
+
+
+/*Wraperclass for the divicon*/
+.map-label {
+    position: absolute;
+    bottom: 0;
+    left: -50%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 205px;
+    height: 51px;
+  }
+  /*Wrap the content of the divicon (text) in this class*/
+  .map-label-content {
+    order: 1;
+    position: relative;
+    left: -50%;
+    background-color: #fff;
+    border-radius: 8px;
+    border-color: #FFF;
+    white-space: nowrap;
+  }
+  .map-label-img-container {
+    margin: 8px 11px 10px 13px;
+    width: 36px;
+    height: 36px;
+  }
+  .map-label-info-container{
+    font-size:12px
+  }
+  /*Add this arrow*/
+  .map-label-arrow {
+    order: 2;
+    width: 0px; height: 0px; left: 50%;
+    border-style: solid;
+    border-color: #FFF transparent transparent transparent;
+    border-width: 10px 6px 0 6px; /*[first number is height, second/fourth are rigth/left width]*/
+    margin-left: -6px;
+  }
+.custom-upload-btn::after {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 12px;
+    bottom: 0;
+    z-index: 3;
+    display: block;
+    height: 80%;
+    padding: 0.375rem 0.75rem;
+    line-height: 1.5;
+    color: #495057;
+    content: "Browse";
+    background-color: #e9ecef;
+    border-left: 0px;
+    border-radius: 0.25rem 0.25rem 0.25rem 0.25rem;
+}
+
+#uploadCSV {
+    width: 180px;
+}
+
+.mat-slide-toggle-thumb {
+    height: 15px !important;
+    width: 15px !important;
+    top: 2px;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.mat-slide-toggle-bar {
+    width: 30px !important;
+}
+
+.bg-matToogleBar[_ngcontent-jaq-c0],
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: #7883a8 !important;
+}
+
+.custom-leaflet .leaflet-popup-tip,
+.custom-leaflet .leaflet-popup-content-wrapper {
+    background: #{$maincolor};
+    color: #ffffff;
+    opacity: 0.9;
+}
+
+.custom-leaflet .leaflet-popup-content {
+    width: 280px;
+}
+
+.custom-leaflet {
+    bottom: -35px !important;
+    left: -159px !important;
+}
+
+.leaflet-popup-content p {
+    width: 82px;
+    font-family: #{$fontNormal};
+    font-size: 10px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffffff;
+}
+
+.leaf-dp {
+    background-color: #fff;
+    border-radius: 50%;
+    font-size: 20px;
+    text-align: center;
+    color: #{$maincolor};
+    padding: 10px;
+    font-weight: bold;
+    border: 1px solid #ffffff;
+}
+
+.leaf-name {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.leaf-email {
+    margin: 10px 0px !important;
+    font-size: 13px !important;
+}
+
+.custom-leaflet .leaflet-popup-close-button {
+    display: none;
+}
+
+.toast-container .ngx-toastr {
+    padding: 8px 12px 2px 12px;
+    background-image: none;
+    width: 500px !important;
+}
+
+.modal-dialog {
+    -webkit-transform: translate(0, -50%);
+    -o-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    top: 37%;
+    margin: 0 auto;
+}
+
+.highcharts-xaxis .highcharts-axis-title tspan {
+    font-weight: bold;
+    font-family: #{$fontBold};
+    margin-top: 10px;
+}
+
+.legend-circle-dp {
+    background: #69577A;
+    color: #FFF;
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+    font-size: 18px;
+    line-height: 36px;
+    color: #FFF;
+    margin: 8px 8px 7px 10px;
+    padding: 1px;
+}
+.user-name {
+    font-family: #{$fontBold};
+    margin: 8px 0px 2px 0px;
+    font-size: 17px;
+    color: #2d2d2d;
+}
+.desk-info {
+    margin: 2px 0px 10px 0px;
+    color: #848484;
+    font-family: #{$fontNormal};
+    font-size: 12px;
+}
+.legend-circle-dp:hover{
+    color:#FFF !important;
+}
+.rounded-circle{
+    width: 36px !important;
+    border-radius: 100% !important;
+    height: 36px !important;
+}
+.ng5-slider .ng5-slider-bubble{
+    font-size: 14px !important;
+}
+.leaflet-zoom-animated{
+//     background: #bdc3c7 !important; /* fallback for old browsers */
+// background: -webkit-linear-gradient(to top, #2c3e50, #bdc3c7) !important;  /* Chrome 10-25, Safari 5.1-6 */
+// background: linear-gradient(to top, #2c3e50, #bdc3c7) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+// background: #536976 !important;  /* fallback for old browsers */
+// background: -webkit-linear-gradient(to top, #292E49, #536976) !important;  /* Chrome 10-25, Safari 5.1-6 */
+// background: linear-gradient(to top, #292E49, #536976) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+// background: #BBD2C5 !important;  /* fallback for old browsers */
+// background: -webkit-linear-gradient(to bottom, #292E49, #536976, #BBD2C5) !important;  /* Chrome 10-25, Safari 5.1-6 */
+// background: linear-gradient(to bottom, #292E49, #536976, #BBD2C5) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+// background: #C9D6FF  !important;  /* fallback for old browsers */
+// background: -webkit-linear-gradient(to bottom, #E2E2E2, #C9D6FF)  !important;  /* Chrome 10-25, Safari 5.1-6 */
+// background: linear-gradient(to bottom, #E2E2E2, #C9D6FF)  !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
