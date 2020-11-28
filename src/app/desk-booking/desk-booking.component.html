@@ -1,3 +1,243 @@
-<p>
-  desk-booking works!
-</p>
+<div class="jumbotron card mainContent">
+  <div class="jumbotron card mainContent mat-elevation-z8">
+    <div class="row">
+      <div class="col-md-4 col-lg-4 col-sm-12 text-left center-margin">
+        <button
+          id="cancel_booking"
+          class="btn btn-default text-muted"
+          data-toggle="modal"
+          data-target="#cancelBookingModal"
+        >
+          <img src="assets/images/sm_back.svg" /> Back
+        </button>
+        <span class="floor-address">{{ currentFloorAddress }}</span>
+      </div>
+      <div class="col-md-5 col-lg-5 col-sm-12 text-left center-margin">
+        <div class="my-legend">
+          <div class="legend-scale">
+            <ul class="legend-labels" *ngIf="!!this.mapData.colorLegend">
+              <ng-container
+                *ngFor="let item of objectKeys(this.mapData?.colorLegend)"
+              >
+                <li>
+                  <span
+                    [style.backgroundColor]="this.mapData['colorLegend'][item]"
+                  ></span>
+                </li>
+                <li *ngIf="item === 'availableEntities'">Available</li>
+                <li *ngIf="item === 'occupiedEntities'">Occupied</li>
+                <li *ngIf="item === 'departmentReservedEntities'">Reserved</li>
+                <li *ngIf="item === 'socialDistancedEntities'">
+                  SocialDistancing
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-lg-3 col-sm-12 text-right">
+        <button
+          id="page_slider"
+          class="btn btn-default btn-circle btn-circle-sm m-1 shadow"
+          (click)="toggleRightPanel()"
+        >
+          <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+        </button>
+      </div>
+      <!-- right panel -->
+      <div
+        [@panelInOut]="rightPanelState"
+        (@panelInOut.done)="hideRightPanel()"
+        [style.display]="rightPanelDisplay"
+        [style.visibility]="rightPanelVisibility"
+        class="right-panel user-slide-panel mat-elevation-z8"
+      >
+        <div class="row booking-title">
+          <div class="col-6 title m-0 p-0">Booking</div>
+          <div class="col-6 text-right m-0 p-0">
+            <button (click)="closeRightPanel()" class="btn btn-sm p-0">
+              <img src="assets/images/close_btn.svg" alt="close" />
+            </button>
+          </div>
+        </div>
+        <hr style="border-top: 1px solid black" />
+
+        <div class="booking-item-container">
+          <!-- employee booking  -->
+          <ng-container
+            *ngIf="bookingType === 'employee'; else departmentBooking"
+          >
+            <div class="form-group col-12 dropdown m-0 p-0">
+              <label class="text-uppercase">Search User</label>
+              <input
+              #emp
+                class="form-control"
+                matInput
+                placeholder="Search User"
+                [matAutocomplete]="auto"
+                [formControl]="employeeSearch"
+                name="employee-search"
+                (input)="getUserAutoCompleteList(emp.value)"
+              />
+            </div>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)='onSelectEmp($event.option.value)'>
+              <mat-option
+                *ngFor="let emp of empAutocompleteList"
+                [value]="emp"
+              >
+                <span>{{ emp.name }}</span>
+              </mat-option>
+            </mat-autocomplete>
+            <div class="emp-container">
+              <div
+                class="user-info-container d-inline-flex flex-lg-row align-items-center align-middle"
+              >
+                <div
+                  *ngIf="bookingRequestObj?.user?.imageUrl; else userLegend"
+                  class="map-label-img-container"
+                >
+                  <img
+                    class="d-block user-img w-100 h-100"
+                    [src]="bookingRequestObj?.user?.imageUrl"
+                  />
+                </div>
+                <ng-template #userLegend>
+                  <span class="text-uppercase legend-circle-dp text-center">
+                    {{ getUserLegend() }}
+                  </span>
+                </ng-template>
+                <div class="user-details">
+                  <div class="w-100 text-left user-name">
+                    {{ bookingRequestObj?.user?.name }}
+                  </div>
+                  <div class="w-100 text-left user-desk-info">
+                    {{ bookingRequestObj?.user?.email }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dep-container row m-0 p-0">
+              <div class="col-10 dep">
+                <div class="dep-label">Department</div>
+                <div class="dep-name">
+                  {{
+                    bookingRequestObj?.user?.department
+                      ? bookingRequestObj?.user?.department
+                      : ""
+                  }}
+                </div>
+              </div>
+            </div>
+            <div class="dep-desk-container row m-0 p-0">
+              <div class="col-10 dep">
+                <div class="dep-label">deskname</div>
+                <div class="dep-name">
+                  {{
+                    selectedSeats.length > 0
+                      ? selectedSeats[0]["displayName"]
+                      : "NA"
+                  }}
+                </div>
+              </div>
+            </div>
+            <div class="date-container row">
+              <div
+                class="form-group col-md-12 col-lg-12 col-sm-12 col-xm-12 mb-0 p-0"
+              >
+                <label class="text-uppercase"> Book Duration </label>
+                <input
+                        type="text"
+                        class="form-control"
+                        name="dateRange"
+                        id="dateRange"
+                        autocomplete="off"
+                        [owlDateTimeTrigger]="empDateRange"
+                        [owlDateTime]="empDateRange"
+                        readonly
+                        [min]="getMinDate"
+                        [max]="getMaxDate"
+                        [(ngModel)]="bookingDate"
+                        [selectMode]="'range'"
+                        (ngModelChange)="setBookingDate(bookingDate)"
+                    />
+                <owl-date-time [pickerType]="'calendar'" #empDateRange></owl-date-time>
+              </div>
+              <div
+                class="form-group col-md-512 col-lg-12 col-sm-12 col-xm-12 mb-0 p-0"
+                style="margin-top: 5px"
+              >
+                <label class="text-uppercase">Shift Time </label>
+                <ng5-slider id="booking_slider_changes"
+                [(value)]="sliderMinValue"
+                [(highValue)]="sliderMaxValue"
+                    [options]="options" 
+                    (valueChange)="onShiftTimeChange($event,'startTime')"
+                    (highValueChange)="onShiftTimeChange($event,'endTime')">
+                </ng5-slider>
+              </div>
+            </div>
+          </ng-container>
+          <!-- employee booking  -->
+          <!-- department booking -->
+          <ng-template #departmentBooking>
+            <div class="selected-seat-container">
+              <span>Desk Name </span>
+              <div class="selected-seats-list">
+                {{ getSelectedSeats }}
+              </div>
+            </div>
+            <div class="dep-date-container row">
+              <div
+                class="form-group col-md-12 col-lg-12 col-sm-12 col-xm-12 mb-0 p-0"
+              >
+                <label class="text-uppercase"> Book Duration </label>
+                <!-- <input
+                        type="text"
+                        class="form-control"
+                        name="dateRange"
+                        id="dateRange"
+                        autocomplete="off"
+                        [owlDateTimeTrigger]="depDateRange"
+                        [owlDateTime]="depDateRange"
+                        readonly
+                        [min]="getMinDate"
+                        [max]="getMaxDate"
+                        [(ngModel)]="bookingObj.selectedDate"
+                        [selectMode]="'range'"
+                        (ngModelChange)="setBookingDate(bookingObj.selectedDate, currentView)"
+                    /> -->
+                <!-- <owl-date-time [pickerType]="'calendar'" #depDateRange></owl-date-time> -->
+              </div>
+            </div>
+            <hr />
+            <div class="autocomplete-container">
+              <!-- <auto-complete id="autocomplete_book_list"
+                [bookingType]="bookingType"
+                (onselectUserDep)="onselectUserDep($event)"
+                (getAutocompleteList)="getBookingAutocompleteList($event)"
+                [autocompleteList]="bookingAutocompleteList$ | async"
+                [dropdownEnable]="bookingDropdownEnable"
+            ></auto-complete> -->
+            </div>
+            <div class="selected-dep">
+              {{ bookingRequestObj?.department?.name }}
+            </div>
+          </ng-template>
+          <!-- department booking -->
+          <div class="confirm-booking text-center">
+            <button
+              class="btn btn-main btn-block"
+              id="save_booking"
+              type="button"
+              (click)="saveBooking()"
+            >
+              Book Now
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- right panel -->
+    </div>
+  </div>
+  <div id="map" class="groove"></div>
+</div>

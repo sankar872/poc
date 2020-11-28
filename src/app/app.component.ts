@@ -3,13 +3,29 @@ import { LoaderService } from "./shared/modules/loader/loader.service";
 import { OnboardingService } from "./services/onboarding.service";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { AppService } from "./app.service";
+import { BookingRequestObject } from "./desk-booking/models/desk-booking.interface";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
+
+  bookingObj: BookingRequestObject = {
+    endTime: 1606262399000,
+    recurringEndTime: 2359,
+    recurringStartTime: 1830,
+    startTime: 1606176000000,
+    userId: 1,
+    floorId: 48
+  };
+  bookingType: string = "employee";
+  mapData:any = {};
+  empAutocompleteList = [];
+  depAutocompleteList = [];
+
   title = 'app';
   searchCriteria = [{'id':'1', 'name':'Department', 'searchKey': 'departmentName'},
                       {'id':'2', 'name':'User', 'searchKey': 'user'},
@@ -27,7 +43,8 @@ export class AppComponent {
   displayedColumns = ['Building', 'Floor', 'Actions'];
   constructor(
           private onboardingService: OnboardingService,
-          public loaderService: LoaderService
+          public loaderService: LoaderService,
+          private appService: AppService
       ) {
           
       }
@@ -35,6 +52,24 @@ export class AppComponent {
       ngOnInit() {
           this.getAllocations(this.searchString, 0, 10);
           this.getAllOnboardSpace();
+
+          if(this.bookingType === "employee") {
+            this.bookingObj["user"] = {
+              id: 1,
+              firstName: "Desmond",
+              lastName: "Eagle",
+              imageUrl: "",
+              name:"Desmond Eagle",
+              email:"admin@smarten.com",
+              department:"Dev"
+            }
+          }else {
+            this.bookingObj["department"]= {
+              id: null,
+              name:null,
+            }
+          }
+          this.getMapData(this.bookingObj);
       }
 
       ngAfterViewInit() {
@@ -141,7 +176,37 @@ export class AppComponent {
       uploadFileInfo(eve){
         console.log(eve);
       }
-}
+
+      getMapData(reqObj) {
+        let request = {
+          request: {
+            requestDetails: reqObj,
+          },
+          zoneId: 57,
+        };
+        this.appService.getMapData(request).subscribe((res) => {
+          this.mapData = res;
+        });
+      }
+      onBookingError(error) {
+        console.log(error);
+      }
+      getUserAutocomplete(searchTerm){
+        this.appService.getEmployeeList(searchTerm).subscribe(res => {
+          this.empAutocompleteList = res;
+        })
+      }
+      getDepAutocomplete(searchTerm){
+        this.appService.getEmployeeList(searchTerm).subscribe(res => {
+          console.log(res);
+          this.depAutocompleteList = res;
+        })
+      }
+      saveBooking(event) {
+    
+      }
+
+    }
 
 export interface Element {
   building: string;

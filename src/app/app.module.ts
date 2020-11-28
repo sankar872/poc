@@ -9,6 +9,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonService } from "./services/common-service.service";
 import { OnboardingService } from './services/onboarding.service';
+import { CommonModule } from "@angular/common";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
+
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+
+//component
 import { AppComponent } from './app.component';
 import { OnboardingModalComponent } from './onboarding/modal/onboarding-modal/onboarding-modal.component';
 import { environment } from "../environments/environment";
@@ -19,7 +25,6 @@ import { CustomLoaderComponent } from "./shared/modules/custom-loader/custom-loa
 import { CustomLoaderService } from "./shared/modules/custom-loader/custom-loader.service";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService, ToastrModule } from "ngx-toastr";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ConfirmationDialogService } from "./shared/confirmation-dialog/confirmation-dialog.service";
 import { ConfirmationDialogComponent } from "./shared/confirmation-dialog/confirmation-dialog.component";
 import { LeafletService } from "./services/onboard-leaflet.service";
@@ -52,7 +57,9 @@ import {
 import { OnboardAllocationModule } from '../app/onboarding/onboard-allocation/onboard-allocation.module';
 import { OnboardSpaceModule } from '../app/onboarding/onboard-space/onboard-space.module';
 //module
-import { DeskBookingModule } from "./desk-booking/desk-booking.module"
+import { DeskBookingModule } from "./desk-booking/desk-booking.module";
+
+import {AppService} from "./app.service";
 
 
 @NgModule({
@@ -107,8 +114,8 @@ import { DeskBookingModule } from "./desk-booking/desk-booking.module"
     CustomLoaderService,
     ToastrService,
     ConfirmationDialogService,
-    LeafletService
-    
+    LeafletService,
+    AppService
   ],
   entryComponents: [ConfirmationDialogComponent],
   bootstrap: [AppComponent]
