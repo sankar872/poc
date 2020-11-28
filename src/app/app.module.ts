@@ -51,6 +51,9 @@ import {
 } from "@angular/material";
 import { OnboardAllocationModule } from '../app/onboarding/onboard-allocation/onboard-allocation.module';
 import { OnboardSpaceModule } from '../app/onboarding/onboard-space/onboard-space.module';
+//module
+import { DeskBookingModule } from "./desk-booking/desk-booking.module"
+
 
 @NgModule({
   declarations: [
@@ -91,7 +94,8 @@ import { OnboardSpaceModule } from '../app/onboarding/onboard-space/onboard-spac
     ToastrModule.forRoot(),
     OnboardAllocationModule,
     BrowserAnimationsModule,
-    OnboardSpaceModule
+    OnboardSpaceModule,
+    DeskBookingModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -104,6 +108,7 @@ import { OnboardSpaceModule } from '../app/onboarding/onboard-space/onboard-spac
     ToastrService,
     ConfirmationDialogService,
     LeafletService
+    
   ],
   entryComponents: [ConfirmationDialogComponent],
   bootstrap: [AppComponent]
