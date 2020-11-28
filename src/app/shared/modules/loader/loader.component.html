@@ -1,0 +1,41 @@
+<!-- <ngx-loading
+    [show]="loaderService.loading$ | async"
+    *ngIf="loaderService.loading$ | async"
+    [config]="{ backdropBorderRadius: '3px' }"
+></ngx-loading> -->
+<!-- <div class="spinner-container">
+    <div class="loader">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div> -->
+<div class="spinner-container" *ngIf="loaderService.loading$ | async">
+    <div class="gooey">
+        <span class="dot"></span>
+        <div class="dots">
+            <span style="background-color:#A19AAC"></span>
+            <span style="background-color:#6D547C"></span>
+            <span style="background-color:#BC8796"></span>
+        </div>
+    </div>
+</div>
+
+<!-- <div
+    class="spinner-container"
+    *ngIf="
+        loaderService.loading$ | async
+    "
+>
+    <div id="circle">
+        <div class="loader-icon">
+            <div class="loader-icon">
+                <div class="loader-icon">
+                    <div class="loader-icon"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

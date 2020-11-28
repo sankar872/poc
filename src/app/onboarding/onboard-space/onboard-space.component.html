@@ -1,0 +1,26 @@
+<div class="jumbotron card mainContent">
+  <div class="row" *ngIf="stepper == 'first';">
+    <div
+        class="form-group col-lg-3 col-md-12 col-sm-12 mt-4"
+        id="downloadStatus"
+    >
+        <button id="download_data"
+            type="button"
+            class="btn button fa-icon-border"
+            (click)="download()"
+        >
+            Download <i class="fa fa-download fa-icons"></i>
+        </button>
+      
+        <input
+          id = "fileInput"
+          type="file"
+          class="custom-file-input form-control"
+          aria-describedby="inputGroupFileAddon01"
+          (change)="onUploadAutocadFile($event)"
+          autocomplete="off"
+        />
+    </div>
+  </div>
+
+</div>

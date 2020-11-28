@@ -1,0 +1,14 @@
+/* @import "../../../styles/variables.scss"; */
+.modal-footer {
+  justify-content: space-between !important;
+}
+.modal-footer .btn-cancel {
+  font-family: OpenSans;
+  font-weight: 700;
+  font-size: 17px;
+  color: white !important;
+  background-color: #6d547c;
+}
+.modal-footer .btn-cancel:hover {
+  color: #FFF !important
+}

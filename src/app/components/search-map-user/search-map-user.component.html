@@ -1,0 +1,50 @@
+<div class="user-search-container">
+    <div class="w-100 close" style="right: 18px;">
+        <div class="text-right  m-0 p-0">
+            <button (click)="closepanel()" class="btn btn-sm p-0">
+                <img src="assets/images/close_btn.svg" alt="close"/>
+            </button>
+        </div>
+        <!-- <button id="close_panel"
+        type="button"
+        class="close btn-circle"
+        aria-label="Close"
+        (click)="closepanel()"
+    >
+        <span aria-hidden="true">&times;</span>
+    </button> -->
+    </div>
+    <div class="form-group search-box">
+        <label for=""></label>
+        <input #searchInp id="search_inpput" type="text" class="form-control" placeholder="{{getTranslate('searchByName')}}" autocomplete="off" (input)="onSearchUser(searchInp.value)"/>
+    </div>
+    <div class="user-list-container" *ngIf="users$ | async as userList">
+        <ng-container *ngFor="let item of userList">
+            <ng-container *ngIf="item?.user?.name">
+                    <div class="user-info-container d-inline-flex flex-lg-row align-items-center align-middle" (click)="viewUserSeat(item)">
+                        <div *ngIf="!!item.user?.imageUrl;else userLegend" class="map-label-img-container">
+                            <img class="d-block user-img w-100 h-100" [src]="item.user?.imageUrl">
+                        </div>
+                        <ng-template #userLegend>
+                            <span  class="text-uppercase legend-circle-dp text-center" >
+                                {{getUserLegend(item)}}
+                            </span>
+                        </ng-template>
+                        <div class="user-details">
+                            <div class="w-100  text-left user-name">
+                                {{item.user?.name}}
+                            </div>
+                            <div class="w-100  text-left user-desk-info">
+                                {{getTranslate('desk')}}: {{item.entityInfo?.displayName}}
+                            </div>    
+                        </div>
+                    </div>
+            </ng-container>
+        </ng-container>
+        </div>
+        <div class="loadmore-container">
+            <button id="load_more_btn" class="loadmore btn btn-main w-100" *ngIf="totalRecordAction$ | async as total" (click)="loadMoreUser(total)">
+                {{getTranslate('loadMore')}}   
+            </button>
+        </div>
+</div>

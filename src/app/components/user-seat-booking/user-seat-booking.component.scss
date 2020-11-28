@@ -1,0 +1,253 @@
+@import "../../../styles/variables.scss";
+.mainContent-map {
+    margin-bottom: 10px;
+}
+.mat-radio-button:nth-child(2) {
+    padding-left: 40px;
+}
+
+.showMapAndSelection {
+    // height: 900px;
+}
+#mapid {
+    width: 100%;
+    height: 680px;
+    overflow: hidden;
+}
+.mapSelection {
+    height: 100%;
+}
+.mapSelection,
+.mapSection {
+    background-color: #ffffff;
+    padding: 15px;
+}
+
+.confirmSelection {
+    bottom: 0px;
+    position: absolute;
+}
+
+.selectedSeats {
+    height: 800px;
+    overflow-y: auto;
+}
+
+.dot {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.no-border {
+    border: none;
+    font-size: 12px !important;
+}
+tr:nth-child(even) {
+    background-color: #fff !important;
+}
+.bottom-right {
+    position: absolute;
+    bottom: 25px;
+    // right: 0;
+}
+thead tr:nth-child(1) th,
+tfoot tr th {
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.bottom-right {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 5px;
+    padding: 10px 40px 10px 10px;
+}
+.seat-list {
+    // height: 550px;
+}
+.list-group-item {
+    border: none !important;
+    padding: 6px;
+}
+.dot {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.seat-list::-webkit-scrollbar,
+.table-responsive::-webkit-scrollbar {
+    width: 0.3em;
+}
+
+.seat-list::-webkit-scrollbar-track,
+.table-responsive::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.seat-list::-webkit-scrollbar-thumb,
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+
+.buildingActive,
+.buildingActive a {
+    background: #6d547c !important;
+    color: #fff !important;
+    border-radius: 0px !important;
+}
+
+/* The container */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: #{$fontBold} !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 100%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    background-color: #0f1f54;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+    left: 10px;
+    top: 6px;
+    width: 6px;
+    height: 11px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.book-now {
+    bottom: 6px;
+    position: absolute;
+    padding: 0px 25px 0px 2px;
+}
+.selected-workstation {
+    font-family: #{$fontBold} !important;
+    font-size: 17px;
+}
+.text-muted-title {
+    font-size: 15px;
+    font-family: #{$fontBold} !important;
+}
+.text-title {
+    font-size: 15px;
+    font-family: #{$fontBold} !important;
+}
+.user-detail {
+    font-size: 14px;
+    font-family: #{$fontBold} !important;
+}
+@media (max-width: 320px) {
+    .right-card {
+        padding: 0px;
+        top: 15px;
+    }
+}
+@media (max-width: 481px) {
+    .right-card {
+        padding: 0px;
+        top: 15px;
+    }
+}
+@media (max-width: 641px) {
+    .right-card {
+        padding: 0px;
+        top: 15px;
+    }
+}
+@media (max-width: 962px) {
+    .right-card {
+        padding: 0px;
+        top: 15px;
+    }
+}
+#back_btn{
+    padding: 12px 0px;
+}
+.pl-0{
+    padding: 15px 0px;
+}
+
+.user-slide-panel{
+  background: #FFF;
+    position: absolute;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 33%;
+    // min-width: 250px;
+    z-index: 999;
+    font-family: #{$fontNormal};
+    box-shadow:
+    0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12)
+}
+.btn-circle {
+  width: 20px;
+    height: 20px;
+    line-height: 23px;
+    text-align: center;
+    padding: 0;
+    border-radius: 50%;
+    background-color: #848484;
+}

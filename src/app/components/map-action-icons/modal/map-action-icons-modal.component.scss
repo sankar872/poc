@@ -1,0 +1,44 @@
+.btn-circle {
+    width: 35px;
+    height: 35px;
+    line-height: 45px;
+    text-align: center;
+    padding: 0;
+    border-radius: 50%;
+    background-color: #FFF;
+}
+.btn-circle-cross {
+    width: 15px;
+    height: 15px;
+    line-height: 13px;
+    text-align: center;
+    padding: 0;
+    border-radius: 50%;
+    margin-bottom: 0px;
+}
+.legend-circle {
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    /* padding: 2px; */
+    font-size: 14px;
+    line-height: 30px;
+    background: #69577A;
+    color: #FFF;
+}
+.viewPdf {
+    color: #0F1F54;
+    border-bottom: 1px solid;
+    padding-bottom: 1px;
+}
+.viewPdf:hover {
+    text-decoration: none !important;
+}
+
+/*tags*/
+:host ::ng-deep .ng2-tag-input tag{
+    border-radius: 4px !important;
+    padding: 1px 5px !important;
+    background-color: #F3F7FA !important;
+}
+/*tags*/

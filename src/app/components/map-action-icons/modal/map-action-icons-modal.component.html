@@ -1,0 +1,5 @@
+<div>
+    <ng-container *ngIf="pageType === 'print-map'">
+        <print-pdf (closePopup)="closePopup()" [currentZone]="currentZone" [view]="pdfView" [floorId]="floorId" [showCircle]="showCircle"></print-pdf>
+    </ng-container>
+</div>

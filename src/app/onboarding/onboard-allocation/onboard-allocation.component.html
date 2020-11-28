@@ -1,0 +1,202 @@
+<div class="jumbotron card mainContent">
+  <ng-container *ngIf="!showMap">
+      <ng-container *ngIf="(currentView$ | async) === 'allocationView'">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                  <form>
+                      <div class="form-row">
+           
+                          
+                          <div class="form-group col-lg-3 col-md-5 col-sm-5">
+                              <label for="inputEmail4"
+                                  >{{ "Upload" }} (.csv
+                                  {{ "file" }})</label
+                              >
+                              <div class="input-group" id="">
+                              <!-- <div class="input-group" id="uploadCSV"> -->
+                                  <input [(ngModel)]="uploadData" [ngModelOptions]="{standalone: true}"
+                                      type="file"
+                                      class="form-control custom-file-input"
+                                      id="importFile"
+                                      aria-describedby="inputGroupFileAddon01"
+                                      (change)="uploadCSV($event.target.files)"
+                                  />
+                                  <label
+                                      class="custom-file-label custom-upload-btn"
+                                      for="inputGroupFile01"
+                                      #labelImport
+                                  ></label>
+                              </div>
+                          </div>
+  
+                          <div class="form-group col-lg-9 col-md-7 col-sm-7">
+                              <button id="download_template"
+                                  type="button"
+                                  (click)="download()"
+                                  class="btn btn-outline-primary btn-main-outline mt-4"
+                              >
+                                  {{ "DownloadTemplate" }}
+                              </button>
+                              &nbsp;
+                              <button id="upload_file_activity"
+                                  type="button"
+                                  class="btn btn-main mt-4 btnSmall"
+                                  (click)="uploadFileToActivity()"
+                              >
+                                  {{ "Upload" }}
+                              </button>
+                              &nbsp;
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-12">
+                  <div class="table-responsive">
+                      <mat-table
+                  [dataSource]="dataSource"
+                  class="table-responsive-md"
+                  >
+                  <ng-container matColumnDef="employeecode">
+                      <mat-header-cell *matHeaderCellDef >
+                          {{ "employeeCode" }}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                          {{ element?.user?.empId || 'NA'}}
+                      </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef>
+                          {{ "name" }}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                          {{ element?.user?.name || 'NA'}}
+                      </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="department">
+                      <mat-header-cell *matHeaderCellDef>
+                          {{ "department" }}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                          {{ element?.user?.departName || 'NA'}}
+                      </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="desk">
+                      <mat-header-cell *matHeaderCellDef>
+                          {{ "desk" }}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                          {{ element?.entityInfo?.displayName || 'NA'}}
+                      </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="floor">
+                      <mat-header-cell *matHeaderCellDef>
+                          {{ "floor" }}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                          {{ element?.floorDetailsDTO?.zoneLocationDTO?.name || 'NA'}}
+                      </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="building">
+                      <mat-header-cell *matHeaderCellDef>
+                          {{ "building" }}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                          {{
+                              element?.floorDetailsDTO?.zoneLocationDTO?.building
+                                  ?.name || 'NA'
+                          }}
+                      </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="location">
+                      <mat-header-cell *matHeaderCellDef>
+                          {{ "location" }}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                          {{ element?.floorDetailsDTO?.zoneLocationDTO?.site?.name || 'NA'}}
+                      </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="Status">
+                      <mat-header-cell *matHeaderCellDef>
+                          {{ "status" }}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                          {{ element?.user?.userActivityStatus || 'NA'}}
+                      </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="locate">
+                      <mat-header-cell *matHeaderCellDef>
+                          {{ "locate" }}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                          <i id="{{'open_allocation_'+element.user?.empId}}"
+                              class="fa fa-map-marker fa-icons"
+                              (click)="openAllocationMap(element)"
+                              aria-hidden="true"
+                          ></i>
+                          <!-- <i
+                              class="fa fa-edit"
+                              (click)="editAllocation(element)"
+                          ></i> -->
+                      </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="Action">
+                      <mat-header-cell *matHeaderCellDef>
+                          {{ "action" }}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                          <!-- <i id="{{'edit_allocation_'+element.user?.empId}}"
+                              class="fa fa-edit"
+                              (click)="editAllocation(element)"
+                          ></i>
+                          &nbsp; -->
+                          <img src="./assets/images/delete-photo.png"
+                              class="block-img"
+                              (click)="deleteWorkstation(element)"
+                          />
+                          <!-- <i class="fa fa-trash" (click)="trashWorkStation(element)"></i>  -->
+                      </mat-cell>
+                  </ng-container>
+  
+                  <mat-header-row *matHeaderRowDef="displayedColumns" class="table-header"></mat-header-row>
+                  <mat-row
+                      *matRowDef="let row; columns: displayedColumns"
+                  ></mat-row>
+                      </mat-table>
+                  </div>
+              </div>
+  
+              <mat-paginator
+                  class="w-100 mtop-1"
+                  #paginator
+                  [pageSize]="pageSize"
+                  [pageSizeOptions]="pageSizeOptions"
+                  [showFirstLastButtons]="true"
+                  (page)="getNextRecords($event)"
+                  [length]="length"
+              ></mat-paginator>
+  
+              <!-- <mat-paginator class="w-100 mtop-1" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+          </div>
+      </ng-container>
+  </ng-container>
+  <ng-container *ngIf="showMap">
+    <user-seat-view  
+    [data]="currentSelectedRow"
+    (goBack)="goBack()"
+    (leafletMap)="leafletMap($event)"
+    (userInfoMap)="userInfoMap"
+    [userInfoMapData] = "userInfoMapData"
+    ></user-seat-view>
+  </ng-container>
+</div>

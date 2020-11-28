@@ -1,0 +1,131 @@
+@import "../../../styles/variables.scss";
+#mapid{
+    width: 100%; 
+    height: 600px;
+  }
+
+#map{
+    width: 100%; 
+    height: 600px;
+  }
+
+form label {
+    text-transform: none;
+}
+
+label{
+  font-variant: none;
+}
+:host .leaflet-marker-pane::after{
+  z-index: 700 !important;
+}
+
+/*Wraperclass for the divicon*/
+.map-label {
+    position: absolute;
+    bottom: 0;
+    left: -50%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 250px;
+  }
+  /*Wrap the content of the divicon (text) in this class*/
+  .map-label-content {
+    order: 1;
+    position: relative; left: -50%;
+    background-color: #fff;
+    border-radius: 8px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #FFF;
+    padding: 5px;
+    white-space: nowrap;
+  }
+  .map-label-img-container {
+      width: 46px;
+      height: 46px;
+      img {
+          width: 100%;
+          height: 100%;
+      }
+  }
+  .btn-circle {
+    width: 35px;
+    height: 35px;
+    line-height: 45px;
+    text-align: center;
+    padding: 0;
+    border-radius: 50%;
+    background-color: #FFF;
+}
+.btn-circle-cross {
+    width: 15px;
+    height: 15px;
+    line-height: 13px;
+    text-align: center;
+    padding: 0;
+    border-radius: 50%;
+    margin-bottom: 0px;
+}
+.legend-circle {
+    background: #69577A;
+    color: #FFF;
+    width: 46px;
+    height: 46px;
+    border-radius: 100%;
+    /* padding: 2px; */
+    font-size: 14px;
+    line-height: 46px;
+    background: #69577A;
+    color: #FFF;
+    margin: 8px 8px 7px 10px;
+}
+.user-name {
+    font-family: #{$fontMedium} !important;
+    margin: 8px 0px 2px 0px;
+}
+.desk-info {
+    margin: 2px 0px 10px 0px;
+    color: #848484;
+    font-family: #{$fontNormal} !important;
+    font-size: 13px;
+}
+
+.user-list-container {
+    height: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.user-info-container{
+    width: auto; 
+    height: auto;
+    padding: 5px; 
+    margin-bottom: 5px;
+}
+.user-info-container .active {
+    border: 1px dashed;
+}
+.user-img{
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+}
+.user-desk-info{
+    // margin-top: 23px;
+    // position: absolute;
+    margin-left: 12px;
+    font-size: 14px;
+}
+  .map-label-info-container{
+    font-size:12px
+  }
+  /*Add this arrow*/
+  .map-label-arrow {
+    order: 2;
+    width: 0px; height: 0px; left: 50%;
+    border-style: solid;
+    border-color: #FFF transparent transparent transparent;
+    border-width: 10px 6px 0 6px; /*[first number is height, second/fourth are rigth/left width]*/
+    margin-left: -6px;
+  }

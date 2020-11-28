@@ -1,0 +1,22 @@
+<div class="row p-0 mt-1">
+    <!-- common button icons -->
+    <div class="text-right col-md-12" style="float: right;">
+        <button id="page_slider" class="btn btn-default btn-circle btn-circle-sm m-1 shadow" *ngIf="isShowable('pageSlider')" (click)="togglePageRightPanel()">
+            <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+        </button>
+        <button id="print" class="btn btn-default btn-circle btn-circle-sm m-1 shadow" (click)="onPrintbtnClick()" *ngIf="isShowable('print')">
+            <img src="/assets/images/print.svg" alt=""/>
+        </button>
+        <button id="calender" class="btn btn-default btn-circle btn-circle-sm m-1 shadow" *ngIf="isShowable('calendar')">
+            <img src="/assets/images/calendar_icon.svg" alt=""/>
+        </button>
+        <button id="search_icon" class="btn btn-default btn-circle btn-circle-sm m-1 shadow" *ngIf="isShowable('search')" (click)="onSearchBtnClick()">
+            <img src="/assets/images/search_icon.svg" alt="" />
+        </button>
+        <button id="qr_code" class="btn btn-default btn-circle btn-circle-sm m-1 shadow" *ngIf="isShowable('qrcode')" (click)="togglePageRightPanel()">
+            <i class="fa fa-qrcode qrcode" aria-hidden="true"></i>
+        </button>
+        
+    </div>
+    <!-- common button icons -->
+</div>

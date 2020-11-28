@@ -25,15 +25,21 @@ table {
 .mat-header-row .mat-header-cell {
     font-family: #{$fontBold};
     letter-spacing: normal;
-    height: 13px;
+    height: 20px;
     line-height: 1.25;
     font-weight: bold;
     font-stretch: normal;
     color: #4d4d4d;
+    text-transform: capitalize;
+    text-align: center;
 }
 
-tr.mat-header-row {
+.mat-header-row {
     height: 45px !important;
+}
+
+.mat-row{
+    text-align: center;
 }
 
 a {
@@ -113,7 +119,7 @@ input {
     color: #4d4d4d;
 }
 
-tr th {
+tr th, .table-header {
     background-color: #{$bodyColor};
     font-size: 12px;
     font-weight: bold;

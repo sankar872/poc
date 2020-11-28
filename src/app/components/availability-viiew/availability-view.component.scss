@@ -1,0 +1,140 @@
+@import "../../../styles/variables.scss";
+.mainContent-map {
+  margin-bottom: 10px;
+}
+.mat-radio-button:nth-child(2) {
+  padding-left: 40px;
+}
+
+.showMapAndSelection {
+  // height: 900px;
+}
+#mapid {
+  width: 100%;
+  height: 680px;
+  overflow: hidden;
+}
+.mapSelection {
+  height: 100%;
+}
+.mapSelection,
+.mapSection {
+  background-color: #ffffff;
+  padding: 15px;
+}
+
+.confirmSelection {
+  bottom: 0px;
+  position: absolute;
+}
+
+.selectedSeats {
+  height: 800px;
+  overflow-y: auto;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.no-border {
+  border: none;
+  font-size: 12px !important;
+}
+tr:nth-child(even) {
+  background-color: #fff !important;
+}
+.bottom-right {
+  position: absolute;
+  bottom: 25px;
+  // right: 0;
+}
+thead tr:nth-child(1) th,
+tfoot tr th {
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.bottom-right {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 5px;
+  padding: 10px 40px 10px 10px;
+}
+.seat-list {
+  height: 250px;
+  overflow-y: auto;
+}
+.list-group-item {
+  border: none !important;
+  padding: 6px;
+}
+
+.seat-list::-webkit-scrollbar,
+.table-responsive::-webkit-scrollbar {
+  width: 0.3em;
+}
+
+.seat-list::-webkit-scrollbar-track,
+.table-responsive::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.seat-list::-webkit-scrollbar-thumb,
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+.buildingActive,
+.buildingActive a {
+  background: #6d547c !important;
+  color: #fff !important;
+  border-radius: 0px !important;
+}
+
+.buildingDet{
+  color: #454444;
+  font-family: #{$fontBold};
+  text-decoration: underline;
+}
+
+.headingTitle{
+  color: #454444;
+  font-family: #{$fontBold};
+  font-size: 14px;
+}
+
+@media (max-width: 320px) {
+  .right-card {
+    padding: 0px;
+    top: 15px;
+  }
+}
+@media (max-width: 481px) {
+  .right-card {
+    padding: 0px;
+    top: 15px;
+  }
+}
+@media (max-width: 641px) {
+  .right-card {
+    padding: 0px;
+    top: 15px;
+  }
+}
+@media (max-width: 962px) {
+  .right-card {
+    padding: 0px;
+    top: 15px;
+  }
+}
+.boldLink{
+  font-weight: bold;
+  color: #0F1F54 !important;
+}
