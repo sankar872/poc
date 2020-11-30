@@ -74,7 +74,6 @@ export class OnboardingService {
     }
 
     uploadFile(file) {
-        alert();
         let url = `${this.upload_Url}webconversion/generateTilesUpdated`;
         const formData: FormData = new FormData();
         formData.append("file", file, file.name);

@@ -5,6 +5,8 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { AppService } from "./app.service";
 import { BookingRequestObject } from "./desk-booking/models/desk-booking.interface";
+import { debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: "app-root",
@@ -26,6 +28,9 @@ export class AppComponent {
   empAutocompleteList = [];
   depAutocompleteList = [];
 
+  currentBuildingId;
+  currentFloorId;
+
   title = 'app';
   searchCriteria = [{'id':'1', 'name':'Department', 'searchKey': 'departmentName'},
                       {'id':'2', 'name':'User', 'searchKey': 'user'},
@@ -37,16 +42,26 @@ export class AppComponent {
   userInfoMap:any;
   flag:boolean = false;
   uploadFloor = [];
+  openFloor = [];
+  mapView = 'listPage';
   dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
   displayedColumns = ['Building', 'Floor', 'Actions'];
+
+  selectedDate = new Date();
+  dayTime = "0000";
+  displayAnalysticMap = [];
+
   constructor(
           private onboardingService: OnboardingService,
           public loaderService: LoaderService,
           private appService: AppService
       ) {
-          
+        this.$save.pipe(debounceTime(1000)).subscribe((event: any) => {
+          console.log(event);
+          this.receivedDataFromChild(event);
+        });
       }
   
       ngOnInit() {
@@ -70,11 +85,15 @@ export class AppComponent {
             }
           }
           this.getMapData(this.bookingObj);
+
+          this.getAnalytics('department');
       }
 
       ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
       }
+
+      
 
       paginationForAllocations(name){
         this.getAllocations("", name.pageIndex=0, name.pageSize)
@@ -83,6 +102,11 @@ export class AppComponent {
       uploadFloorPlan(ele){
         this.uploadFloor = [...this.uploadFloor,ele];
         console.log(this.uploadFloor);
+      }
+
+      openFloorPlan(ele){
+        this.openFloor = [...this.openFloor,ele];
+        this.mapView = "showMap";
       }
       
       getSearchAllocations(name){
@@ -206,7 +230,96 @@ export class AppComponent {
     
       }
 
+      viewList(eve){
+        this.mapView = eve;
+      }
+
+      getAnalytics(type) {
+          this.currentBuildingId  = 56;
+          this.currentFloorId = 57;
+          this.getData();
+      }
+
+      receivedDataFromChild(event) {
+        this.selectedDate = new Date(event.timeStamp);
+        this.dayTime = event.dayTime;
+        this.getData();
+      }
+
+      getData = () => {
+        let selectedDate = this.getTimeStamp(this.selectedDate.getTime(), "start");
+        // let selectedDate = new Date(this.selectedDate).setHours(0,0,0,0);
+        if (!this.currentFloorId) {
+            alert(
+                "Kindly Select Building and Floor Details"
+            );
+            return;
+        }
+        let reqObj: any = {
+            dayTime: +this.dayTime,
+            viewType: "DEPARTMENT",
+            floorId: this.currentFloorId,
+            timestamp: selectedDate,
+        };
+        this.appService.getSpaceViewAnalytics(
+            reqObj
+        ).subscribe(res=>{
+          this.displayAnalysticMap = [...this.displayAnalysticMap, res]
+        });
+    };
+
+    timeConverter(UNIX_timestamp) {
+        let a = new Date(parseInt(UNIX_timestamp));
+        let months = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
+        ];
+        let date = (a.getDate().toString().length <= 1) ? 0+a.getDate().toString(): a.getDate().toString()
+        let month = ((a.getMonth()+1).toString().length <= 1) ? 0+(a.getMonth()+1).toString(): (a.getMonth()+1).toString();
+        let year = a.getFullYear();
+        let monthString = months[a.getMonth()];
+        let hour = a.getHours();
+        let min = a.getMinutes();
+        let sec = a.getSeconds();
+        let timeStampObj: any = {};
+        timeStampObj.UNIXtimeStamp = a;
+        timeStampObj.date = date;
+        timeStampObj.monthString = monthString;
+        timeStampObj.month = month;
+        timeStampObj.year = year;
+        timeStampObj.hour = hour;
+        timeStampObj.min = min;
+        timeStampObj.sec = sec;
+
+        return timeStampObj;
     }
+    getTimeStamp(dateObj, type="start"){
+        let timeStampObj = this.timeConverter(dateObj);
+        if(type === "start") {
+            return new Date(`${timeStampObj.year}-${timeStampObj.month}-${timeStampObj.date}T00:00:00.000+00:00`).getTime();
+        }else {
+            return new Date(`${timeStampObj.year}-${timeStampObj.month}-${timeStampObj.date}T23:59:59.000+00:00`).getTime();
+        }
+    }
+
+    $save: Subject<void> = new Subject<void>();
+    
+    requestForSearchSlide(eve){
+      this.$save.next(eve);
+      
+    }
+
+}
 
 export interface Element {
   building: string;

@@ -21,6 +21,24 @@
           autocomplete="off"
         />
     </div>
+
+
+    <ng-container *ngIf="currentView === 'mapView'">
+        <div class="row col-12" style="padding: 10px;">
+            <div class="col-12 text-left  p-0 m-0">
+                <button id="back_to_list" class="btn btn-default text-muted" (click)="backtoListPage()">
+                    <img src="assets/images/sm_back.svg" /> {{ "back" }}
+                </button>
+            </div>
+            <div id="map" class="groove col-12"></div>
+        </div>
+        <!-- <ng-container *ngTemplateOutlet="floorMap">
+
+        </ng-container> -->
+      <!-- <ng-template #floorMap>
+        
+      </ng-template> -->
+    </ng-container>
   </div>
 
 </div>

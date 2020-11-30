@@ -1,0 +1,137 @@
+<div class="row showMapAndSelection">
+  <div
+      class="col-12 mat-elevation-z8"
+      style="padding:0px; background-color: #FFF"
+  >
+  <!-- common button icons -->
+  <map-action-icons [currentZone]="currentZone" [viewOptions]="['pageSlider','print']" (toggleSearchPanel)="toggleSearchPanel()" (toggleRightPanel)="toggleRightPanel()" [pdfView]="pdfView" [floorId]="floorId" [showCircle]="false"></map-action-icons>
+  <!-- <search-map-user class="user-slide-panel" [@slideInOut]="searchState" (@slideInOut.done)="hideUserSearch()" [style.display]="userSearchVisibility"  [userList]="timelineData?.value" (closeSlide)="closeSlide()" (viewUserInMap)="viewUserInMap($event)"></search-map-user> -->
+<!-- common button icons -->
+<!-- rightpanel -->
+<div  [@panelInOut]="rightPanelState" (@panelInOut.done)="hideRightPanel()" [style.display]="rightPanelDisplay" [style.visibility]="rightPanelVisibility" class="right-panel user-slide-panel mat-elevation-z8">
+  <div class="mapSelection" [style.display]="rightPanelDisplay">
+      <div class="w-100 mb-4" >
+          <div class="text-right  m-0 p-0">
+              <button (click)="closeRightPanel()" class="btn btn-sm p-0">
+                  <img src="assets/images/close_btn.svg" alt="close"/>
+              </button>
+          </div>
+          <!-- <button
+          type="button"
+          class="close btn-circle"
+          aria-label="Close"
+          (click)="closeRightPanel()"
+      >
+          <span aria-hidden="true">&times;</span>
+          
+      </button> -->
+      </div>
+      <div class="row" style="height:100%">
+          <div
+              class="col-md-12 col-lg-12  py-4 mb-1"
+              style="background-color: #FFF;"
+          >
+              <ng-container>
+                  <div class="row">
+                      <div class="col-12 form-group">
+                          <label for="" class="text-uppercase">{{
+                              "date"
+                          }}</label>
+                            <div class="input-group mb-3">
+                              <input
+                                  #dateSelect
+                                  placeholder="{{
+                                      'date'
+                                  }}"
+                                  [(ngModel)]="selectedDate"
+                                  type="text"
+                                  name="lease_start"
+                                  id="leaseStart"
+                                  class="form-control "
+                                  [owlDateTimeTrigger]="dt"
+                                  [owlDateTime]="dt"
+                                  readonly
+                                  autocomplete="off"
+                                  style="border-right:0px"
+                                  (ngModelChange)="
+                                      onDateChange($event)
+                                  "
+                              />
+                              <div class="input-group-append">
+                                  <span
+                                      style="border-left: 0px;height: 38px;border-bottom-right-radius: 3px;
+                                          border-top-right-radius: 3px;"
+                                      [owlDateTimeTrigger]="dt"
+                                      class="input-group-text"
+                                  >
+                                      <i class="fa fa-calendar"></i>
+                                  </span>
+                              </div>
+                              <owl-date-time
+                                  [pickerType]="'calendar'"
+                                  #dt
+                              ></owl-date-time>
+                              <!-- <div
+                                      class="invalid-feedback"
+                                      *ngIf="getRequired('leaseStart')"
+                                  >
+                                      <div>
+                                          Lease start period is required.
+                                      </div>
+                                  </div> -->
+                          </div>
+                      </div>
+                      <div
+                          class="form-group col-lg-12 col-md-12 col-sm-12"
+                      >
+                          <label
+                              for=""
+                              class="text-uppercase w-100"
+                              >{{
+                                  "period timeline"
+                              }}</label
+                          >
+                          <ng5-slider
+                              [(value)]="value"
+                              [options]="options"
+                              (userChange)="onShiftTimeChange($event)"
+                          ></ng5-slider>
+                      </div>
+                  </div>
+                  <hr />
+                  <div>
+                      <h5>{{ "departments" }}</h5>
+                      <ul class="seat-list list-group">
+                          <li
+                              class="list-group-item"
+                              *ngFor="
+                                  let item of colorLengends
+                              "
+                          >
+                              <span
+                                  [style.background-color]="
+                                      item[1]
+                                  "
+                                  class="dot"
+                              ></span>
+                              <span style="margin-left:25px">{{
+                                  item[0]
+                              }}</span>
+                          </li>
+                      </ul>
+                  </div>
+              </ng-container>
+              <!-- <app-user-search-view [userList]="timelineData?.value" (viewUserInMap)="viewUserInMap($event)"></app-user-search-view> -->
+              <app-user-search-view [userList]="userList" [seatsList]="timelineData?.value" (viewUserInMap)="viewUserInMap($event)"></app-user-search-view>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- rightpanel -->
+      <div class="mapSection">
+          <div class="pb-4 ml-4">
+              <div id="mapid" class="mt-2 groove"></div>
+          </div>
+      </div>
+  </div>
+</div>

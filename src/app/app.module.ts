@@ -58,6 +58,7 @@ import { OnboardAllocationModule } from '../app/onboarding/onboard-allocation/on
 import { OnboardSpaceModule } from '../app/onboarding/onboard-space/onboard-space.module';
 //module
 import { DeskBookingModule } from "./desk-booking/desk-booking.module";
+import { OnboardAnalyticsModule } from "./onboard-analytics/onboard-analytics.module";
 
 import {AppService} from "./app.service";
 
@@ -102,7 +103,8 @@ import {AppService} from "./app.service";
     OnboardAllocationModule,
     BrowserAnimationsModule,
     OnboardSpaceModule,
-    DeskBookingModule
+    DeskBookingModule,
+    OnboardAnalyticsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
