@@ -21,7 +21,11 @@ export class UserSearchViewComponent implements OnChanges {
     @Output()
     closeSlide = new EventEmitter();
     @Output() 
-    viewUserInMap = new EventEmitter()
+    viewUserInMap = new EventEmitter();
+
+    userListInfo;
+    seatListInfo;
+
     showloader:boolean = true;
     userListSubject$ =  new Subject<any[]>();
     userListAction$ = this.userListSubject$.asObservable();
@@ -40,12 +44,7 @@ export class UserSearchViewComponent implements OnChanges {
     // });
     resultData = [];
     users$ = Observable.combineLatest([this.userListAction$,this.searchInputAction$, this.totalRecordAction$])
-    .pipe(
-        tap(() => {
-            this.showloader = true;
-            this.resultData = []
-        }),
-        map(([users, search, listCount]) => {
+    .subscribe(([users, search, listCount]) => {
             if(!!users && users != null) {
                 let searchStr = search.toLowerCase();
                 let filteredData = users.filter(usr => {
@@ -79,20 +78,15 @@ export class UserSearchViewComponent implements OnChanges {
                             }   
                     }
                 })
+                this.userListInfo = filteredData;
+                //return filteredData.slice(0,listCount)
                 return {filteredData, listCount};
             }
-        }),
-        filter(res => Boolean(res) && !!res),
-        map(res => res['filteredData'].slice(0,res['listCount'])),
-        tap(res =>this.showloader = false),
-    )
+        });
+    
     seats$ = Observable.combineLatest([this.seatListAction$,this.searchInputAction$, this.totalRecordAction$])
-    .pipe(
-        tap(() => {
-            this.showloader = true;
-            this.resultData = []
-        }),
-        map(([users, search, listCount]) => {
+    .subscribe(([users, search, listCount]) => {
+            console.log("hereee",search);
             if(!!users && users != null) {
                 let searchStr = search.toLowerCase();
                 let filteredData = users.filter(usr => {
@@ -126,13 +120,12 @@ export class UserSearchViewComponent implements OnChanges {
                             }   
                     }
                 })
+                console.log(filteredData);
+                this.seatListInfo = filteredData;
                 return {filteredData, listCount};
             }
-        }),
-        filter(res => Boolean(res) && !!res),
-        map(res => res['filteredData'].slice(0,res['listCount'])),
-        tap(res =>this.showloader = false),
-    )
+        });
+
     constructor(
        
     ) {
@@ -140,14 +133,18 @@ export class UserSearchViewComponent implements OnChanges {
     ngOnChanges(changes: SimpleChanges) {
         if(this.userList) {
             this.userListSubject$.next(this.userList);
+            this.userListInfo = this.userList;
         }
         if(this.seatsList){
             this.seatListSubject$.next(this.seatsList);
+            this.seatListInfo = this.seatsList;
         }
+
         this.radioOptionsChange();
     }
 
     onSearchUser =(event) => {
+        console.log(event);
         this.searchInputSubject$.next(event);
         this.totalRecordSubject$.next(10);
     }
@@ -183,9 +180,11 @@ export class UserSearchViewComponent implements OnChanges {
         if(this.radioOptions == 'users'){
             this.isUsers = true;
             this.isSeats = false;
+            this.userListSubject$.next(this.userList);
         } else{
             this.isUsers = false;
             this.isSeats = true;
+            this.seatListSubject$.next(this.seatsList);
         }
     }
 }
