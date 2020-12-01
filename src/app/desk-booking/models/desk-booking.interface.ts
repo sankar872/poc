@@ -4,7 +4,7 @@ export interface BookingRequestObject {
   recurringStartTime: number
   startTime: number
   userId: number
-  floorId: number
+  zoneId: number
   user?: userObj
   department?:departmentObj
 }

@@ -7,6 +7,7 @@ import { AppService } from "./app.service";
 import { BookingRequestObject } from "./desk-booking/models/desk-booking.interface";
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
+import { SSL_OP_ALL } from 'constants';
 
 @Component({
   selector: "app-root",
@@ -16,14 +17,27 @@ import { Subject } from 'rxjs/Subject';
 export class AppComponent {
 
   bookingObj: BookingRequestObject = {
-    endTime: 1606262399000,
+    endTime: 1606867199000,
     recurringEndTime: 2359,
-    recurringStartTime: 1830,
-    startTime: 1606176000000,
+    recurringStartTime: 1230,
+    startTime: 1606780800000,
     userId: 1,
-    floorId: 48
+    user:{
+      id: 1,
+      firstName: "sam",
+      lastName:"andrew",
+      imageUrl:null,
+      name:"sam andrew",
+      email:"sam@ss.com",
+      department:"Finance"
+    },
+    department:{
+      id:1,
+      name:"Finance"
+    },
+    zoneId: 5 
   };
-  bookingType: string = "employee";
+  bookingType: string = "department";
   mapData:any = {};
   empAutocompleteList = [];
   depAutocompleteList = [];
@@ -79,8 +93,8 @@ export class AppComponent {
             }
           }else {
             this.bookingObj["department"]= {
-              id: null,
-              name:null,
+                id:1,
+                name:"Finance"
             }
           }
           this.getMapData(this.bookingObj);
@@ -205,7 +219,7 @@ export class AppComponent {
           request: {
             requestDetails: reqObj,
           },
-          zoneId: 57,
+          zoneId: 257,
         };
         this.appService.getMapData(request).subscribe((res) => {
           this.mapData = res;
@@ -315,6 +329,10 @@ export class AppComponent {
     requestForSearchSlide(eve){
       this.$save.next(eve);
       
+    }
+
+    onSubmit = (event) => {
+      alert(`your booking request object:, ${JSON.stringify(event)}`);
     }
 
 }

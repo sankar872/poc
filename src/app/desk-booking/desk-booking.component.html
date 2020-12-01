@@ -191,6 +191,22 @@
                 class="form-group col-md-12 col-lg-12 col-sm-12 col-xm-12 mb-0 p-0"
               >
                 <label class="text-uppercase"> Book Duration </label>
+                <input
+                        type="text"
+                        class="form-control"
+                        name="dateRange"
+                        id="dateRange"
+                        autocomplete="off"
+                        [owlDateTimeTrigger]="depDateRange"
+                        [owlDateTime]="depDateRange"
+                        readonly
+                        [min]="getMinDate"
+                        [max]="getMaxDate"
+                        [(ngModel)]="bookingDate"
+                        [selectMode]="'range'"
+                        (ngModelChange)="setBookingDate(bookingDate)"
+                    />
+                <owl-date-time [pickerType]="'calendar'" #depDateRange></owl-date-time>
                 <!-- <input
                         type="text"
                         class="form-control"
@@ -202,7 +218,7 @@
                         readonly
                         [min]="getMinDate"
                         [max]="getMaxDate"
-                        [(ngModel)]="bookingObj.selectedDate"
+                        [(ngModel)]="bookingDate"
                         [selectMode]="'range'"
                         (ngModelChange)="setBookingDate(bookingObj.selectedDate, currentView)"
                     /> -->
@@ -220,7 +236,7 @@
             ></auto-complete> -->
             </div>
             <div class="selected-dep">
-              {{ bookingRequestObj?.department?.name }}
+              {{ bookingRequestObj?.department?.name}}
             </div>
           </ng-template>
           <!-- department booking -->
