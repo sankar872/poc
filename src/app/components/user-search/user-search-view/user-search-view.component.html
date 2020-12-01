@@ -10,7 +10,7 @@
         </mat-radio-button>
      </mat-radio-group>
 </div>
-<div class="form-group search-box" *ngIf="isSeats && users$ | async as userList">
+<div class="form-group search-box" *ngIf="isSeats">
     <!-- <label for=""></label> -->
     <input #searchSeats id="search_seats" type="text" class="form-control" placeholder="{{getTranslate('searchBySeat')}}" autocomplete="off" (input)="onSearchUser(searchSeats.value)"/>
 </div>
@@ -18,8 +18,8 @@
     <!-- <label for=""></label> -->
     <input #searchInp id="search_inpput" type="text" class="form-control" placeholder="{{getTranslate('searchByName')}}" autocomplete="off" (input)="onSearchUser(searchInp.value)"/>
 </div>
-<div class="user-list-container seat-list-container" *ngIf="isSeats && seats$ | async as seatList">
-    <ng-container *ngFor="let item of seatList">
+<div class="user-list-container seat-list-container" *ngIf="isSeats && seatListInfo as seatsList">
+    <ng-container *ngFor="let item of seatsList">
         <ng-container *ngIf="item?.entityInfo?.displayName">
                 <div class="user-info-container seat-info-container d-inline-flex flex-lg-row align-items-center align-middle" (click)="viewSeatNumber(item)">
                     <div class="user-details seat-details">
@@ -32,7 +32,7 @@
     </ng-container>
     </div>
     
-<div class="user-list-container" *ngIf="isUsers && users$ | async as userList">
+<div class="user-list-container" *ngIf="isUsers && userListInfo as userList">
     <ng-container *ngFor="let item of userList">
         <ng-container *ngIf="item?.user?.name">
                 <div class="user-info-container d-inline-flex flex-lg-row align-items-center align-middle" (click)="viewUserSeat(item)">
