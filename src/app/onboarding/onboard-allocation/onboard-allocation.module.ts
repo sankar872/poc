@@ -18,8 +18,7 @@ import { UserSeatViewComponent } from "../user-seat-view/user-seat-view.componen
     MatPaginatorModule, 
     MatAutocompleteModule,
     MatSelectModule,
-    AvailabilityViewModule,
-    UserSeatBookingModule
+    AvailabilityViewModule
   ],
   declarations: [OnboardAllocationComponent, UserSeatViewComponent],
   exports:[OnboardAllocationComponent],

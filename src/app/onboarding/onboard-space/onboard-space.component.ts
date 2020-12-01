@@ -88,16 +88,15 @@ export class OnboardSpaceComponent implements OnInit {
 
   ngAfterViewInit() {
     //this.uploadFloor.subscribe(data => this.FloorData = data);
-    console.log(this.FloorData);
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if(typeof changes['uploadFloor'] != 'undefined' && typeof changes['uploadFloor']['currentValue'] != 'undefined' && changes['uploadFloor']['currentValue'].length>0) {
       document.getElementById('fileInput').click();
     }
 
-    if(typeof changes['openFloor  '] != 'undefined' && typeof changes['openFloor']['currentValue'] != 'undefined' && changes['openFloor']['currentValue'].length>0) {
+    if(typeof changes['openFloor'] != 'undefined' && typeof changes['openFloor']['currentValue'] != 'undefined' && changes['openFloor']['currentValue'].length>0) {
       this.currentView = 'mapView';
       this.openMap(changes['openFloor']['currentValue']);
     }
@@ -155,7 +154,6 @@ export class OnboardSpaceComponent implements OnInit {
   }
 
   showFloor(ele) {
-    console.log(ele);
     let data = {
         zoneId: 57,
     };

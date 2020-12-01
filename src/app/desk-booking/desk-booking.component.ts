@@ -751,7 +751,6 @@ removeSelectedSeat(seatData){
   }
   sendErrorReport(err) {}
   onSelectEmp(userObj) {
-    console.log(userObj);
     this.employeeSearch.setValue(userObj.name);
     this.bookingRequestObj["user"] = userObj;
     this.bookingRequestObj["userId"] = userObj.id;
@@ -767,7 +766,6 @@ removeSelectedSeat(seatData){
     return new Date(new Date(maxDate).setHours(23, 59, 59, 59));
   }
   setBookingDate(selectedDate){
-    console.log(selectedDate);
     // need to set booking start and end time and call map fun
     this.selectedSeats = [];
     this.bookingRequestObj["startTime"] = getTimeStamp(new Date(selectedDate[0]).getTime(), "start");

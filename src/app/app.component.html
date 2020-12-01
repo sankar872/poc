@@ -8,7 +8,7 @@
         *ngIf="flag"
     ></app-onboard-space> -->
 
-    <mat-tab-group>
+    <mat-tab-group  (selectedTabChange)="tabClick($event)">
         <mat-tab label="Onboard Allocation">
 
             <app-onboard-allocation 
@@ -24,7 +24,7 @@
             *ngIf="flag"></app-onboard-allocation>
 
         </mat-tab>
-        <mat-tab label="Onboard Space">
+        <mat-tab label="Onboard Space" >
             <app-onboard-space
                 (downloadFloor) = "downloadFloor($event)"
                 (uploadFileInfo) = "uploadFileInfo($event)"
@@ -70,6 +70,7 @@
         </mat-tab>
         <mat-tab label="Desk Booking">
             <app-desk-booking
+            *ngIf="activeLink == 'Desk Booking'"
             [bookingType]="bookingType"
             [mapData]="mapData"
             [bookingRequestObj]= "bookingObj"
@@ -84,6 +85,7 @@
         </mat-tab>
         <mat-tab label="Space View">
             <app-onboard-analytics
+            *ngIf="activeLink == 'Space View'"
             [displayAnalysticMap] = "displayAnalysticMap"
             (requestSearchSlide) = "requestForSearchSlide($event)"
             ></app-onboard-analytics>

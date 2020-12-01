@@ -190,13 +190,15 @@ export class OnboardAnalyticsComponent implements OnInit {
     if(typeof changes['displayAnalysticMap'] != 'undefined' && typeof changes['displayAnalysticMap']['currentValue'] != 'undefined' && changes['displayAnalysticMap']['currentValue'].length>0) {
       this.timelineData = changes['displayAnalysticMap']['currentValue'][0];
       this.colorLengends = Object.entries(changes['displayAnalysticMap']['currentValue'][0]['colorLegend']);
-      console.log(this.colorLengends);
       setTimeout(() => {
         this.setupMap();
-        console.log(this.selectedDate);
-      }, 2000);
-      
+      }, 1000);
     }
+  }
+
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
   }
 
   toggleSearchPanel = () => {
@@ -242,7 +244,6 @@ export class OnboardAnalyticsComponent implements OnInit {
         zoomLeavel: this.userZoomLevel,
       };
       let mapTiles = this.timelineData["activeUrl"];
-      console.log( this.timelineData);
       let tilesOption: TilesOption = {
           tileUrl: mapTiles,
           maxZoom: 14,

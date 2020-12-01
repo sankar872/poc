@@ -144,7 +144,6 @@ export class UserSearchViewComponent implements OnChanges {
         if(this.seatsList){
             this.seatListSubject$.next(this.seatsList);
         }
-        console.log(this.seatsList);
         this.radioOptionsChange();
     }
 

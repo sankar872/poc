@@ -87,7 +87,7 @@ export class UserSeatViewComponent implements OnInit, OnChanges {
 
 
     loadMap() {
-        console.log(this.userInfoMapData);
+       
         let response = this.userInfoMapData['response'];
 
                 this.leaflet_url = response["tileUrl"];
@@ -107,7 +107,7 @@ export class UserSeatViewComponent implements OnInit, OnChanges {
                 const unOnboardedListData = response["unonboardedEntities"];
                 let newArr: any = [];
                 workStationOnboardingList.forEach((entity) => {
-                    console.log(entity);
+                   
                     let coordinates_arr =
                         entity["entityChildType"]["attributes"]["coordinates"];
                     let workstationBlockName =
@@ -215,7 +215,6 @@ export class UserSeatViewComponent implements OnInit, OnChanges {
         let reqObj = {
             zoneId: this.data['entityChildType']['zoneId'],
         };
-        console.log(reqObj);
         this.leafletMap.emit(reqObj);
     }
     
@@ -333,7 +332,7 @@ export class UserSeatViewComponent implements OnInit, OnChanges {
     formColorArray = () => {
         let currentContext = this;
         currentContext.workstationColorArr = [];
-        console.log(this.leaflet_blockInfo);
+     
         for (const [key, value] of Object.entries(this.leaflet_blockInfo)) {
             let colrObj: any = {};
             colrObj.key = key;
@@ -413,9 +412,9 @@ export class UserSeatViewComponent implements OnInit, OnChanges {
         for (const key in this.leaflet_blockInfo) {
             if (this.leaflet_blockInfo[key].includes(seatId)) {
                 colorData = this.workstationColorArr.find((clrData) => {
-                    console.log(clrData.key,key);
+                   
                     if (clrData.key === key) {
-                        console.log(clrData);
+                      
                         return clrData;
                     }
                 });

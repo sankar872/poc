@@ -52,14 +52,13 @@ export class AppComponent {
   selectedDate = new Date();
   dayTime = "0000";
   displayAnalysticMap = [];
-
+  activeLink = '';
   constructor(
           private onboardingService: OnboardingService,
           public loaderService: LoaderService,
           private appService: AppService
       ) {
         this.$save.pipe(debounceTime(1000)).subscribe((event: any) => {
-          console.log(event);
           this.receivedDataFromChild(event);
         });
       }
@@ -101,7 +100,6 @@ export class AppComponent {
 
       uploadFloorPlan(ele){
         this.uploadFloor = [...this.uploadFloor,ele];
-        console.log(this.uploadFloor);
       }
 
       openFloorPlan(ele){
@@ -110,7 +108,6 @@ export class AppComponent {
       }
       
       getSearchAllocations(name){
-        console.log(name);
         this.getAllocations(name.searchString, name.pageIndex, name.pageSize)
       }
 
@@ -122,7 +119,6 @@ export class AppComponent {
         
         this.onboardingService.onboardSpace()
         .subscribe(res => {
-          console.log(res);
           this.onboardSpaceResult = res;
           this.flag = true;
         }, err => {
@@ -130,11 +126,10 @@ export class AppComponent {
       }
 
       deleteAllocation(eve){
-        console.log(eve);
+        alert("will call delete API");
       }
       
       getAllocations(searchString, pageIndex=0, pageSize=10){
-        console.log(searchString);
           const allocation$ = this.onboardingService.searchAllocation(
               searchString,
               pageSize,
@@ -148,11 +143,16 @@ export class AppComponent {
       }
 
       userFileUpload(eve){
-        console.log(eve);
+        
+      }
+
+
+      tabClick(eve){
+        this.activeLink = eve.tab.textLabel;
+        //if(eve.index)
       }
 
       downloadSeatAllocation(eve){
-        console.log(eve);
         var data = [["name1", "city1", "some other info"], ["name2", "city2", "more info"]];
         var csvContent = "data:text/csv;charset=utf-8,";
         data.forEach(function(infoArray, index){
@@ -189,7 +189,6 @@ export class AppComponent {
       }
 
       leafMapParent(eve) {
-        console.log("parent", eve);
         this.onboardingService
             .getFloorDetailsByFloorId()
             .subscribe((res) => {
@@ -198,7 +197,7 @@ export class AppComponent {
       }
 
       uploadFileInfo(eve){
-        console.log(eve);
+        
       }
 
       getMapData(reqObj) {
@@ -213,7 +212,7 @@ export class AppComponent {
         });
       }
       onBookingError(error) {
-        console.log(error);
+       
       }
       getUserAutocomplete(searchTerm){
         this.appService.getEmployeeList(searchTerm).subscribe(res => {
@@ -222,7 +221,6 @@ export class AppComponent {
       }
       getDepAutocomplete(searchTerm){
         this.appService.getEmployeeList(searchTerm).subscribe(res => {
-          console.log(res);
           this.depAutocompleteList = res;
         })
       }

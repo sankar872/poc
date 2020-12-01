@@ -14,6 +14,7 @@ import {
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { CommonService } from "../../services/common-service.service";
+import { OnboardingService } from "../../services/onboarding.service";
 import {
   MatDialog,
   MatDialogRef,
@@ -88,7 +89,8 @@ export class OnboardAllocationComponent implements OnInit, OnDestroy {
             public loaderService: LoaderService,
             private confirmationDialogService: ConfirmationDialogService,
             private toastr: ToastrService,
-            private formBuilder: FormBuilder
+            private formBuilder: FormBuilder,
+            public onboardingService: OnboardingService
         ) {
             
     }
@@ -98,7 +100,6 @@ export class OnboardAllocationComponent implements OnInit, OnDestroy {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        console.log("changes", changes);
         if (changes["allocationResult"] && typeof changes["allocationResult"]["currentValue"] != 'undefined') {
             //this.userInfoMapData = changes["allocationResult"]["currentValue"];
                 this.getAllocations();
@@ -112,20 +113,11 @@ export class OnboardAllocationComponent implements OnInit, OnDestroy {
         }
     }
 
-    // ngOnChanges(){
-    //     console.log(this.userInfoMap);
-    //     if(typeof(this.userInfoMap) != 'undefined'){
-    //         this.showMap = true;
-    //     }
-    // }
-
     getAllocations(){
             let res = this.allocationResult;
-            console.log(res);
             this.dataSource = res["response"]["content"];
             this.length = res["response"]["totalElements"];
             this.pageIndex = this.length < 2 ? 0 : res["response"]["number"];
-            console.log(res);
     }
 
     getNextRecords(event) {
@@ -133,6 +125,7 @@ export class OnboardAllocationComponent implements OnInit, OnDestroy {
     }
 
     uploadCSV(files: FileList) {
+        alert();
         this.labelImport.nativeElement.innerText = Array.from(files)
             .map((f) => f.name)
             .join(", ");
@@ -144,7 +137,14 @@ export class OnboardAllocationComponent implements OnInit, OnDestroy {
 
     uploadFileToActivity() {
         if (this.fileToUpload) {
-            this.userFileUpload.emit(this.uploadFile);
+            const allocation$ = this.onboardingService.uploadFile(
+                this.fileToUpload
+            )
+            .subscribe(
+                (data) => {
+                    
+                })
+            //this.userFileUpload.emit(this.uploadFile);
         } else {
             alert("No file selected!");
         }
@@ -176,7 +176,7 @@ export class OnboardAllocationComponent implements OnInit, OnDestroy {
         if (this.registerForm.invalid) {
             return;
         }
-        console.log(this.registerForm.value.searchBy);
+        
         if(this.registerForm.value.searchBy == 'user')
         {
             if(this.selectedData.userId){
@@ -212,7 +212,6 @@ export class OnboardAllocationComponent implements OnInit, OnDestroy {
             "pageIndex": this.pageIndex,
             "pageSize": this.pageSize
         };
-        console.log(data);
         this.getSearchAllocations.emit(data);
 
             // this.dataSource = new MatTableDataSource();
@@ -274,7 +273,7 @@ export class OnboardAllocationComponent implements OnInit, OnDestroy {
     }
 
     userInfoMaps(eve){
-        console.log(this.userInfoMap);
+        
     }
 
 
