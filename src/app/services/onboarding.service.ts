@@ -68,6 +68,12 @@ export class OnboardingService {
         return this.http.get<any>(url, this.httpOptions);
     }
 
+    getFloorPlanDetailsByFloorId(floorId) {
+        let url = "http://10.8.0.2:9988/webconversion/entityInfo/getByExternalFloorId?externalFloorId="+floorId;
+        //let url = this.BASEURL + `onboarding/floorOnboarding?zoneId=`+this.currentZone;
+        return this.http.get(url,{});
+    }
+
     onboardSpace(){
         let url = this.BASEURL +"onboarding/floorDetails?states=PARTIAL,COMPLETE";
         return this.http.get<any>(url,this.httpOptions);
@@ -79,6 +85,19 @@ export class OnboardingService {
         const formData: FormData = new FormData();
         formData.append("file", file, file.name);
         formData.append("data",JSON.stringify({"floorId":"acc1"}));
+        console.log(formData);
+        return this.http
+            .post(
+                url,
+                formData
+            )
+    }
+    uploadFloorPlanFile(file) {
+        //let url = `${this.upload_Url}webconversion/generateTilesUpdated`;
+        let url = "http://10.8.0.2:9988/webconversion/generateTilesUpdated";
+        const formData: FormData = new FormData();
+        formData.append("file", file, file.name);
+        formData.append("data",JSON.stringify({"floorId":"acc11"}));
         console.log(formData);
         return this.http
             .post(

@@ -243,6 +243,7 @@ export class OnboardAnalyticsComponent implements OnInit {
             console.log(res);
         });
 
+        
 
 
 
@@ -335,6 +336,7 @@ export class OnboardAnalyticsComponent implements OnInit {
               }
               i++;
           });
+          console.log(this.timelineData["value"]);
           if (!!this.timelineData["value"]) {
               Object.values(this.timelineData["value"]).forEach(async (value) => {
                   let seatData = value;

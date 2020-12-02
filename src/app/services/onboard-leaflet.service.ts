@@ -59,7 +59,9 @@ export class LeafletService {
                     direction: "center",
                     className: "my-labels",
                 })
-                .openTooltip();
+                .openTooltip().on("click",function(e){
+                    console.log(polygonOption);
+                });
         }
         polygonObj.addTo(map);
         let returnObj = { map, polygonObj };

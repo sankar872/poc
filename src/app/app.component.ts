@@ -7,7 +7,6 @@ import { AppService } from "./app.service";
 import { BookingRequestObject } from "./desk-booking/models/desk-booking.interface";
 import { debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
-import { SSL_OP_ALL } from 'constants';
 
 @Component({
   selector: "app-root",
@@ -58,6 +57,8 @@ export class AppComponent {
   uploadFloor = [];
   openFloor = [];
   mapView = 'listPage';
+  seatMetaInfo:any = [];
+  selectedFloor = 'acc1';
   dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
@@ -66,7 +67,9 @@ export class AppComponent {
   selectedDate = new Date();
   dayTime = "0000";
   displayAnalysticMap = [];
-  activeLink = '';
+  activeLink = 'Onboard Space';
+  userInfo:any;
+
   constructor(
           private onboardingService: OnboardingService,
           public loaderService: LoaderService,
@@ -132,15 +135,39 @@ export class AppComponent {
       //Onboard space download end
 
       //Onboard space upload Floor start
-      uploadFloorSuccess(eve){
+      uploadFloorSuccessCallback(eve){
         alert("Successfully uploaded..");
         console.log(eve);
       }
 
-      uploadFloorError(eve){
+      uploadFloorErrorCallback(eve){
         alert("Error in uploading..");
         console.log(eve);
       }
+
+      onUploadAutocadFile = async event => {
+        var fileName = event.target.value;
+        var fileType = fileName.substring(fileName.lastIndexOf('.') + 1);
+        fileType = fileType.toLowerCase();
+        if (fileType !== 'dwg') {
+          this.uploadFloorErrorCallback('Not a valid file');
+          return;
+        }
+        const fileData = event.target.files[0];
+        if (event.target.files && event.target.files[0]) {
+          var reader = new FileReader();
+          reader.readAsDataURL(event.target.files[0]);
+          const uploadFileObj$ = await this.onboardingService.uploadFloorPlanFile(fileData)
+        .subscribe(
+            async res => {
+              this.uploadFloorSuccessCallback(res);
+            },
+            err => {
+              this.uploadFloorErrorCallback(err);
+            }
+          );
+        }
+      };
       //Onboard space upload Floor end
 
 
@@ -208,6 +235,21 @@ export class AppComponent {
         console.log(eve);
         alert("Map not loaded");
       }
+
+      showUserInfo:boolean = false;
+      seatInfoCallBack(eve){
+        console.log(eve);
+        this.showUserInfo = true;
+        this.userInfo = {
+          name : "venkat",
+          seatInfo : eve.label,
+          phoneNumber: "1234567890",
+          department: "HR",
+          company: "SmartenSpace"
+        }
+        this.colMapPx = "col-9";
+        this.colUserPx = "col-3";
+      }
       //Space view end
 
 
@@ -231,13 +273,36 @@ export class AppComponent {
 
       uploadFloorPlan(ele){
         ele['url'] = "http://google.com";
-        this.uploadFloor = [...this.uploadFloor,ele];
+        document.getElementById('fileInput').click();
+        //this.uploadFloor = [...this.uploadFloor,ele];
       }
 
       openFloorPlan(ele){
         ele['url'] = "http://google.com";
+        ele["seatMetaInfo"] = {};
+        ele["floorId"] = "acc11";
+        // ele["seatMetaInfo"] = {
+        //   'seatId' : "NQ/27/26",
+        //   'color'  : "red"
+        // };
+
         this.openFloor = [...this.openFloor,ele];
         this.mapView = "showMap";
+      }
+
+      colMapPx = "col-12";
+      colUserPx = "";
+      getFloorInfo(eve) {
+        console.log(this.openFloor);
+        this.openFloor = [];
+        let ele = {};
+        ele['url'] = "http://google.com";
+        ele["seatMetaInfo"] = {};
+        ele["floorId"] = this.selectedFloor;
+        this.openFloor = [...this.openFloor,ele];
+        //this.mapView = "showMap";
+        this.showUserInfo = false;
+       
       }
       
       getSearchAllocations(name){
@@ -344,6 +409,7 @@ export class AppComponent {
       }
 
       viewList(eve){
+        console.log(eve);
         this.mapView = eve;
       }
 

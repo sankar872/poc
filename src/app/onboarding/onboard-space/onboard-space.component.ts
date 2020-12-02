@@ -50,9 +50,9 @@ export class OnboardSpaceComponent implements OnInit {
   @Output() downloadSuccess = new EventEmitter<any>();
   @Output() downloadError = new EventEmitter<any>();
 
-  @Input() uploadFloorInfo:any;
-  @Output() uploadFloorSuccess = new EventEmitter<any>();
-  @Output() uploadFloorError = new EventEmitter<any>();
+//   @Input() uploadFloorInfo:any;
+//   @Output() uploadFloorSuccess = new EventEmitter<any>();
+//   @Output() uploadFloorError = new EventEmitter<any>();
 
   @Input() openFloorInfo:any;
   @Output() openFloorSuccess = new EventEmitter<any>();
@@ -101,9 +101,6 @@ export class OnboardSpaceComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(typeof changes['uploadFloorInfo'] != 'undefined' && typeof changes['uploadFloorInfo']['currentValue'] != 'undefined' && changes['uploadFloorInfo']['currentValue'].length>0) {
-      document.getElementById('fileInput').click();
-    }
 
     if(typeof changes['openFloorInfo'] != 'undefined' && typeof changes['openFloorInfo']['currentValue'] != 'undefined' && changes['openFloorInfo']['currentValue'].length>0) {
       this.currentView = 'mapView';
@@ -137,31 +134,6 @@ export class OnboardSpaceComponent implements OnInit {
   }
 
 
-  onUploadAutocadFile = async event => {
-    var fileName = event.target.value;
-    var fileType = fileName.substring(fileName.lastIndexOf('.') + 1);
-    fileType = fileType.toLowerCase();
-    if (fileType !== 'dwg') {
-      this.uploadFloorError.emit('Not a valid file');
-      return;
-    }
-    const fileData = event.target.files[0];
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
-      this.fileName = event.target.files[0].name;
-      const uploadFileObj$ = await this.onboardingService.uploadFile(fileData)
-    .subscribe(
-        async res => {
-          this.isFileUploaded = true;
-          this.uploadFloorSuccess.emit(res);
-        },
-        err => {
-          this.uploadFloorError.emit(err);
-        }
-      );
-    }
-  };
 
   openMap(ele) {
     this.showFloor(ele);
