@@ -9,27 +9,19 @@
     ></app-onboard-space> -->
 
     <mat-tab-group  (selectedTabChange)="tabClick($event)">
-        <mat-tab label="Onboard Allocation">
 
-            <app-onboard-allocation 
-            [allocationResult]="allocationResult" 
-            [userInfoMap]="userInfoMap" 
-            (paginationForAllocations)="paginationForAllocations($event)"
-            (userFileUpload)="userFileUpload($event)"
-            (downloadSeatAllocation)="downloadSeatAllocation($event)"
-            (getAllAllocations)="getAllAllocations($event)"
-            (getSearchAllocations)="getSearchAllocations($event)"
-            (deleteAllocation)="deleteAllocation($event)"
-            (leafMapParent)="leafMapParent($event)"
-            *ngIf="flag"></app-onboard-allocation>
-
-        </mat-tab>
         <mat-tab label="Onboard Space" >
             <app-onboard-space
-                (downloadFloor) = "downloadFloor($event)"
-                (uploadFileInfo) = "uploadFileInfo($event)"
-                [uploadFloor] = "uploadFloor"
-                [openFloor] = "openFloor"
+               
+
+                [uploadFloorInfo] = "uploadFloor"
+                (uploadFloorSuccess) = "uploadFloorSuccess($event)"
+                (uploadFloorError) = "uploadFloorError($event)"
+                
+                [openFloorInfo] = "openFloor"
+                (openFloorSuccess) = "openFloorSuccess($event)"
+                (openFloorError) = "openFloorError($event)"
+
                 (viewList) = "viewList($event)"
             ></app-onboard-space>
             <ng-container *ngIf="mapView == 'listPage'">
@@ -68,6 +60,7 @@
             </ng-container>
            
         </mat-tab>
+
         <mat-tab label="Desk Booking">
             <app-desk-booking
             *ngIf="activeLink == 'Desk Booking'"
@@ -84,11 +77,29 @@
           >
           </app-desk-booking>
         </mat-tab>
+
         <mat-tab label="Space View">
             <app-onboard-analytics
             *ngIf="activeLink == 'Space View'"
-            [displayAnalysticMap] = "displayAnalysticMap"
+            [displayAnalysticInfo] = "displayAnalysticMap"
+            (analysticSucess) = "analysticSucess($event)"
+            (analysticError) = "analysticError($event)"
             (requestSearchSlide) = "requestForSearchSlide($event)"
             ></app-onboard-analytics>
+        </mat-tab>
+        <mat-tab label="Onboard Allocation">
+
+          <app-onboard-allocation 
+          [allocationResult]="allocationResult" 
+          [userInfoMap]="userInfoMap" 
+          (paginationForAllocations)="paginationForAllocations($event)"
+          (userFileUpload)="userFileUpload($event)"
+          (downloadSeatAllocation)="downloadSeatAllocation($event)"
+          (getAllAllocations)="getAllAllocations($event)"
+          (getSearchAllocations)="getSearchAllocations($event)"
+          (deleteAllocation)="deleteAllocation($event)"
+          (leafMapParent)="leafMapParent($event)"
+          *ngIf="flag"></app-onboard-allocation>
+
         </mat-tab>
     </mat-tab-group>

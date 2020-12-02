@@ -75,13 +75,22 @@ export class OnboardingService {
 
     uploadFile(file) {
         let url = `${this.upload_Url}webconversion/generateTilesUpdated`;
+        //let url = "http://10.8.0.23:9988/webconversion/generateTilesUpdated";
         const formData: FormData = new FormData();
         formData.append("file", file, file.name);
-
+        formData.append("data",JSON.stringify({"floorId":"acc1"}));
+        console.log(formData);
         return this.http
             .post(
                 url,
                 formData
             )
+    }
+
+    getAllAttributes() {
+        
+        let url = `http://10.8.0.21:9988/webconversion/entityInfo/getByExternalFloorId?externalFloorId=acc1`;
+        //let url = "http://10.8.0.23:9988/webconversion/generateTilesUpdated";
+        return this.http.get<any>(url);
     }
 }

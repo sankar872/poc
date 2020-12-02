@@ -35,7 +35,7 @@ export class AppComponent {
       id:1,
       name:"Finance"
     },
-    zoneId: 5 
+    zoneId: 5
   };
   bookingType: string = "department";
   mapData:any = {};
@@ -106,17 +106,136 @@ export class AppComponent {
         this.dataSource.paginator = this.paginator;
       }
 
+      //Onboard space Start
+      //Onboard space download start
+      downloadSuccess(eve){
+        var data = [["name1", "city1", "some other info"], ["name2", "city2", "more info"]];
+        var csvContent = "data:text/csv;charset=utf-8,";
+        data.forEach(function(infoArray, index){
+
+          let dataString = infoArray.join(",");
+          csvContent += index < infoArray.length ? dataString+ "\n" : dataString;
+
+        }); 
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "my_data.csv");
+
+        link.click();
+      }
       
+      downloadError(eve){
+        alert("Download having some issue");
+      }
+      //Onboard space download end
+
+      //Onboard space upload Floor start
+      uploadFloorSuccess(eve){
+        alert("Successfully uploaded..");
+        console.log(eve);
+      }
+
+      uploadFloorError(eve){
+        alert("Error in uploading..");
+        console.log(eve);
+      }
+      //Onboard space upload Floor end
+
+
+      openFloorSuccess(eve){
+        console.log(eve);
+        alert("opened Successfully");
+      }
+
+      openFloorError(eve){
+        console.log(eve);
+        alert("Error in loading the leaflet map");
+      }
+
+      //Onboard space End
+
+      //Space view start
+
+      $save: Subject<void> = new Subject<void>();
+    
+      requestForSearchSlide(eve){
+        this.$save.next(eve);
+        
+      }
+
+      getAnalytics(type) {
+        this.currentBuildingId  = 56;
+        this.currentFloorId = 57;
+        this.getData();
+      }
+
+      receivedDataFromChild(event) {
+        this.selectedDate = new Date(event.timeStamp);
+        this.dayTime = event.dayTime;
+        this.getData();
+      }
+
+      getData = () => {
+          let selectedDate = this.getTimeStamp(this.selectedDate.getTime(), "start");
+          // let selectedDate = new Date(this.selectedDate).setHours(0,0,0,0);
+          if (!this.currentFloorId) {
+              alert(
+                  "Kindly Select Building and Floor Details"
+              );
+              return;
+          }
+          let reqObj: any = {
+              dayTime: +this.dayTime,
+              viewType: "DEPARTMENT",
+              floorId: this.currentFloorId,
+              timestamp: selectedDate,
+          };
+          this.appService.getSpaceViewAnalytics(
+              reqObj
+          ).subscribe(res=>{
+            this.displayAnalysticMap = [...this.displayAnalysticMap, res]
+          });
+      };
+
+      analysticSucess(eve){
+        console.log(eve);
+        alert("Map loaded successfully");
+      }
+
+      analysticError(eve){
+        console.log(eve);
+        alert("Map not loaded");
+      }
+      //Space view end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       paginationForAllocations(name){
         this.getAllocations("", name.pageIndex=0, name.pageSize)
       }
 
       uploadFloorPlan(ele){
+        ele['url'] = "http://google.com";
         this.uploadFloor = [...this.uploadFloor,ele];
       }
 
       openFloorPlan(ele){
+        ele['url'] = "http://google.com";
         this.openFloor = [...this.openFloor,ele];
         this.mapView = "showMap";
       }
@@ -184,23 +303,7 @@ export class AppComponent {
         link.click();
       }
 
-      downloadFloor(eve){
-        var data = [["name1", "city1", "some other info"], ["name2", "city2", "more info"]];
-        var csvContent = "data:text/csv;charset=utf-8,";
-        data.forEach(function(infoArray, index){
-
-          let dataString = infoArray.join(",");
-          csvContent += index < infoArray.length ? dataString+ "\n" : dataString;
-
-        }); 
-
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "my_data.csv");
-
-        link.click();
-      }
+      
 
       leafMapParent(eve) {
         this.onboardingService
@@ -210,9 +313,7 @@ export class AppComponent {
             });
       }
 
-      uploadFileInfo(eve){
-        
-      }
+      
 
       getMapData(reqObj) {
         let request = {
@@ -246,39 +347,7 @@ export class AppComponent {
         this.mapView = eve;
       }
 
-      getAnalytics(type) {
-          this.currentBuildingId  = 56;
-          this.currentFloorId = 57;
-          this.getData();
-      }
-
-      receivedDataFromChild(event) {
-        this.selectedDate = new Date(event.timeStamp);
-        this.dayTime = event.dayTime;
-        this.getData();
-      }
-
-      getData = () => {
-        let selectedDate = this.getTimeStamp(this.selectedDate.getTime(), "start");
-        // let selectedDate = new Date(this.selectedDate).setHours(0,0,0,0);
-        if (!this.currentFloorId) {
-            alert(
-                "Kindly Select Building and Floor Details"
-            );
-            return;
-        }
-        let reqObj: any = {
-            dayTime: +this.dayTime,
-            viewType: "DEPARTMENT",
-            floorId: this.currentFloorId,
-            timestamp: selectedDate,
-        };
-        this.appService.getSpaceViewAnalytics(
-            reqObj
-        ).subscribe(res=>{
-          this.displayAnalysticMap = [...this.displayAnalysticMap, res]
-        });
-    };
+      
 
     timeConverter(UNIX_timestamp) {
         let a = new Date(parseInt(UNIX_timestamp));
@@ -324,12 +393,7 @@ export class AppComponent {
         }
     }
 
-    $save: Subject<void> = new Subject<void>();
     
-    requestForSearchSlide(eve){
-      this.$save.next(eve);
-      
-    }
 
     onSubmit = (event) => {
       alert(`your booking request object:, ${JSON.stringify(event)}`);

@@ -47,11 +47,20 @@ declare const $;
 })
 export class OnboardSpaceComponent implements OnInit {
 
-  @Input() uploadFloor:any;
-  @Input() openFloor:any;
-  @Output() downloadFloor = new EventEmitter<String>();
+  @Output() downloadSuccess = new EventEmitter<any>();
+  @Output() downloadError = new EventEmitter<any>();
+
+  @Input() uploadFloorInfo:any;
+  @Output() uploadFloorSuccess = new EventEmitter<any>();
+  @Output() uploadFloorError = new EventEmitter<any>();
+
+  @Input() openFloorInfo:any;
+  @Output() openFloorSuccess = new EventEmitter<any>();
+  @Output() openFloorError = new EventEmitter<any>();
+
+
+
   @Output() viewList = new EventEmitter<String>();
-  @Output() uploadFileInfo = new EventEmitter<any>();
   FloorData = [];
   fileInput:HTMLElement = document.getElementById('fileInput') as HTMLElement;
   spans = [];
@@ -92,13 +101,13 @@ export class OnboardSpaceComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(typeof changes['uploadFloor'] != 'undefined' && typeof changes['uploadFloor']['currentValue'] != 'undefined' && changes['uploadFloor']['currentValue'].length>0) {
+    if(typeof changes['uploadFloorInfo'] != 'undefined' && typeof changes['uploadFloorInfo']['currentValue'] != 'undefined' && changes['uploadFloorInfo']['currentValue'].length>0) {
       document.getElementById('fileInput').click();
     }
 
-    if(typeof changes['openFloor'] != 'undefined' && typeof changes['openFloor']['currentValue'] != 'undefined' && changes['openFloor']['currentValue'].length>0) {
+    if(typeof changes['openFloorInfo'] != 'undefined' && typeof changes['openFloorInfo']['currentValue'] != 'undefined' && changes['openFloorInfo']['currentValue'].length>0) {
       this.currentView = 'mapView';
-      this.openMap(changes['openFloor']['currentValue']);
+      this.openMap(changes['openFloorInfo']['currentValue']);
     }
     
   }
@@ -118,7 +127,13 @@ export class OnboardSpaceComponent implements OnInit {
   }
 
   download(){
-    this.downloadFloor.emit("downloadFloor");
+    let i = ((Math.random()* 10) + 1);
+    if( i > 5){
+        this.downloadSuccess.emit();
+    } else{
+        this.downloadError.emit();
+    }
+    
   }
 
 
@@ -127,7 +142,7 @@ export class OnboardSpaceComponent implements OnInit {
     var fileType = fileName.substring(fileName.lastIndexOf('.') + 1);
     fileType = fileType.toLowerCase();
     if (fileType !== 'dwg') {
-      this.toastrService.error('Not a valid file');
+      this.uploadFloorError.emit('Not a valid file');
       return;
     }
     const fileData = event.target.files[0];
@@ -138,12 +153,11 @@ export class OnboardSpaceComponent implements OnInit {
       const uploadFileObj$ = await this.onboardingService.uploadFile(fileData)
     .subscribe(
         async res => {
-          alert("uploaded successfully...");
           this.isFileUploaded = true;
-          this.uploadFileInfo.emit(res);
+          this.uploadFloorSuccess.emit(res);
         },
         err => {
-          alert("not uploaded successfully...");
+          this.uploadFloorError.emit(err);
         }
       );
     }
@@ -153,91 +167,39 @@ export class OnboardSpaceComponent implements OnInit {
     this.showFloor(ele);
   }
 
-  showFloor(ele) {
-    let data = {
-        zoneId: 57,
-    };
-    this.onboardingService
-    .getFloorDetailsByFloorId()
-    .subscribe((res) => {
-        let response = res["response"];
+    showFloor(ele) {
+        this.onboardingService
+        .getFloorDetailsByFloorId()
+        .subscribe((res) => {
+            let response = res["response"];
 
-        this.leaflet_url = response["tileUrl"];
-        this.leaflet_scaleData = response["scaleAttributes"];
-        this.leaflet_blockInfo = response["blockInfo"];
-        //this.leaflet_overlaydata = response["overlaydata"];
-        this.leaflet_overlaydata = response["overlaydata"];
-        this.leaflet_seatsGeojson = {};
-        this.workstationListData = [];
+            this.leaflet_url = response["tileUrl"];
+            this.leaflet_scaleData = response["scaleAttributes"];
+            this.leaflet_blockInfo = response["blockInfo"];
+            //this.leaflet_overlaydata = response["overlaydata"];
+            this.leaflet_overlaydata = response["overlaydata"];
+            this.leaflet_seatsGeojson = {};
+            this.workstationListData = [];
 
-        
+            
 
-        this.formColorArray();
-        const workStationOnboardingList =
-            response["entityInformation"]["workStationOnboardingList"];
+            this.formColorArray();
+            const workStationOnboardingList =
+                response["entityInformation"]["workStationOnboardingList"];
 
-        const unOnboardedListData = response["unonboardedEntities"];
-        let newArr: any = [];
-        workStationOnboardingList.forEach((entity) => {
-            let coordinates_arr =
-                entity["entityChildType"]["attributes"]["coordinates"];
-            let workstationBlockName =
-                entity["entityChildType"]["name"];
-            let coordinates = [];
-            if (!!coordinates_arr && coordinates_arr != "") {
-                // coordinates = coordinates_arr.map(Object.values);
-                coordinates = coordinates_arr.map(
-                    ({ seatName, x: lat, y: lng }) => ({ lat, lng })
-                );
-            }
-            if(!!this.leaflet_blockInfo[
-                workstationBlockName
-            ]) {
-                const seats = this.leaflet_blockInfo[
-                    workstationBlockName
-                ].sort();
-                let seatId = seats[0];
-                let count = seats.length;
-                let newObj = {
-                    key: workstationBlockName,
-                    seatId: seatId,
-                    area: entity.area,
-                    coordinates: coordinates,
-                    workstationName:
-                        entity.entityChildType.entityTypeId.name,
-                    workstationId: entity.entityChildType.entityTypeId.id,
-                    count: count,
-                    drawType: "polygon",
-                    originalArea: entity.originalArea,
-                    color: this.getColorByWorkstation(workstationBlockName),
-                };
-                this.workstationListData = [
-                    ...this.workstationListData,
-                    newObj,
-                ];
-                entity["listOfSeat"].forEach((seatsData) => {
-                    let seat_id = seatsData.displayName;
-                    let attributes = seatsData.attributes;
-                    this.leaflet_seatsGeojson[seat_id] = attributes;
-                });
-            }
-        });
-        if (
-            unOnboardedListData != "" &&
-            typeof unOnboardedListData != "undefined"
-        ) {
-            for (const [key, entity] of Object.entries(
-                unOnboardedListData
-            )) {
+            const unOnboardedListData = response["unonboardedEntities"];
+            let newArr: any = [];
+            workStationOnboardingList.forEach((entity) => {
                 let coordinates_arr =
-                    entity["wrkStationObj"]["entityChildType"][
-                        "attributes"
-                    ]["coordinates"];
+                    entity["entityChildType"]["attributes"]["coordinates"];
                 let workstationBlockName =
-                    entity["wrkStationObj"]["entityChildType"]["name"];
+                    entity["entityChildType"]["name"];
                 let coordinates = [];
-                if (!!coordinates_arr  && coordinates_arr != "") {
-                    coordinates = coordinates_arr.map(Object.values);
+                if (!!coordinates_arr && coordinates_arr != "") {
+                    // coordinates = coordinates_arr.map(Object.values);
+                    coordinates = coordinates_arr.map(
+                        ({ seatName, x: lat, y: lng }) => ({ lat, lng })
+                    );
                 }
                 if(!!this.leaflet_blockInfo[
                     workstationBlockName
@@ -250,33 +212,86 @@ export class OnboardSpaceComponent implements OnInit {
                     let newObj = {
                         key: workstationBlockName,
                         seatId: seatId,
-                        area: entity["wrkStationObj"]["area"],
+                        area: entity.area,
                         coordinates: coordinates,
-                        workstationName: "",
-                        workstationId: "",
+                        workstationName:
+                            entity.entityChildType.entityTypeId.name,
+                        workstationId: entity.entityChildType.entityTypeId.id,
                         count: count,
                         drawType: "polygon",
-                        originalArea: entity["originalArea"],
-                        color: this.getColorByWorkstation(
-                            workstationBlockName
-                        ),
+                        originalArea: entity.originalArea,
+                        color: this.getColorByWorkstation(workstationBlockName),
                     };
                     this.workstationListData = [
                         ...this.workstationListData,
                         newObj,
                     ];
-                    entity["wrkStationObj"]["listOfSeat"].forEach(
-                        (seatsData) => {
-                            let seat_id = seatsData.displayName;
-                            let attributes = seatsData.attributes;
-                            this.leaflet_seatsGeojson[seat_id] = attributes;
-                        }
-                    );
+                    entity["listOfSeat"].forEach((seatsData) => {
+                        let seat_id = seatsData.displayName;
+                        let attributes = seatsData.attributes;
+                        this.leaflet_seatsGeojson[seat_id] = attributes;
+                    });
+                }
+            });
+            if (
+                unOnboardedListData != "" &&
+                typeof unOnboardedListData != "undefined"
+            ) {
+                for (const [key, entity] of Object.entries(
+                    unOnboardedListData
+                )) {
+                    let coordinates_arr =
+                        entity["wrkStationObj"]["entityChildType"][
+                            "attributes"
+                        ]["coordinates"];
+                    let workstationBlockName =
+                        entity["wrkStationObj"]["entityChildType"]["name"];
+                    let coordinates = [];
+                    if (!!coordinates_arr  && coordinates_arr != "") {
+                        coordinates = coordinates_arr.map(Object.values);
+                    }
+                    if(!!this.leaflet_blockInfo[
+                        workstationBlockName
+                    ]) {
+                        const seats = this.leaflet_blockInfo[
+                            workstationBlockName
+                        ].sort();
+                        let seatId = seats[0];
+                        let count = seats.length;
+                        let newObj = {
+                            key: workstationBlockName,
+                            seatId: seatId,
+                            area: entity["wrkStationObj"]["area"],
+                            coordinates: coordinates,
+                            workstationName: "",
+                            workstationId: "",
+                            count: count,
+                            drawType: "polygon",
+                            originalArea: entity["originalArea"],
+                            color: this.getColorByWorkstation(
+                                workstationBlockName
+                            ),
+                        };
+                        this.workstationListData = [
+                            ...this.workstationListData,
+                            newObj,
+                        ];
+                        entity["wrkStationObj"]["listOfSeat"].forEach(
+                            (seatsData) => {
+                                let seat_id = seatsData.displayName;
+                                let attributes = seatsData.attributes;
+                                this.leaflet_seatsGeojson[seat_id] = attributes;
+                            }
+                        );
+                    }
                 }
             }
-        }
-              this.initLeafletMap(ele);
-          });
+                this.initLeafletMap(ele);
+
+            this.openFloorSuccess.emit(res);
+        }, err => {
+            this.openFloorError.emit(err);
+        });
     }
 
     formColorArray = () => {

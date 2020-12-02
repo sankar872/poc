@@ -8,6 +8,7 @@ import {
 import { LeafletService } from "../services/onboard-leaflet.service";
 import * as L from "leaflet";
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { OnboardingService } from "../services/onboarding.service";
 import { Options } from "ng5-slider";
 declare const $;
 
@@ -43,9 +44,13 @@ declare const $;
 })
 export class OnboardAnalyticsComponent implements OnInit {
 
-  @Input() displayAnalysticMap:any;
+  @Input() displayAnalysticInfo:any;
   @Output()
   requestSearchSlide = new EventEmitter();
+  @Output()
+  analysticSucess = new EventEmitter();
+  @Output()
+  analysticError = new EventEmitter();
   
   timelineData:any = [];
   userZoomLevel: number = 11;
@@ -181,15 +186,15 @@ export class OnboardAnalyticsComponent implements OnInit {
       },
   };
 
-  constructor(public leafletService: LeafletService) { }
+  constructor(public leafletService: LeafletService, public onboardingService: OnboardingService) { }
 
   ngOnInit() {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(typeof changes['displayAnalysticMap'] != 'undefined' && typeof changes['displayAnalysticMap']['currentValue'] != 'undefined' && changes['displayAnalysticMap']['currentValue'].length>0) {
-      this.timelineData = changes['displayAnalysticMap']['currentValue'][0];
-      this.colorLengends = Object.entries(changes['displayAnalysticMap']['currentValue'][0]['colorLegend']);
+    if(typeof changes['displayAnalysticInfo'] != 'undefined' && typeof changes['displayAnalysticInfo']['currentValue'] != 'undefined' && changes['displayAnalysticInfo']['currentValue'].length>0) {
+      this.timelineData = changes['displayAnalysticInfo']['currentValue'][0];
+      this.colorLengends = Object.entries(changes['displayAnalysticInfo']['currentValue'][0]['colorLegend']);
       setTimeout(() => {
         this.setupMap();
       }, 1000);
@@ -234,76 +239,88 @@ export class OnboardAnalyticsComponent implements OnInit {
 
 
   setupMap() {
+        this.onboardingService.getAllAttributes().subscribe(res=>{
+            console.log(res);
+        });
 
-      let initMapOption: LeafLetInit = {
-        mapId: "mapid",
-        minZoom: 10,
-        maxZoom: 14,
-        attributionControl: false,
-        setViewLatLng: [0.25, 0.5],
-        zoomLeavel: this.userZoomLevel,
-      };
-      let mapTiles = this.timelineData["activeUrl"];
-      let tilesOption: TilesOption = {
-          tileUrl: mapTiles,
-          maxZoom: 14,
-          attribution: "smartenspaces",
-          id: "smartenspaces",
-      };
-      if (this.map) {
-          this.leafletService.deleteMap(this.map);
-      }
-      this.map = L.map("mapid", {
-          minZoom: initMapOption.minZoom,
-          maxZoom: initMapOption.maxZoom,
-          attributionControl: initMapOption.attributionControl,
-      }).setView(
-          [initMapOption.setViewLatLng[0], initMapOption.setViewLatLng[1]],
-          initMapOption.zoomLeavel
-      );
-      this.map.on("zoomend", (res) => {
-          this.userZoomLevel = this.map.getZoom();
-          var newzoom = "" + 4 * this.map.getZoom() + "px";
-          if (this.map.getZoom() <= 10) {
-              $(".leaflet-marker-icon.my-labels").css({
-                  "font-size": 0,
-                  "font-weight":"bold",
-                  "-webkit-text-stroke": "0.6px",
-                  "letter-spacing": "0.8px"
-              });
-          } else if (this.map.getZoom() === 11) {
-              $(".leaflet-marker-icon.my-labels").css({
-                  "font-size": 8,
-                  "font-weight":"bold",
-                  "-webkit-text-stroke": "0.6px",
-                  "letter-spacing": "0.8px"
-              });
-          } else if (this.map.getZoom() >= 14) {
-              $(".leaflet-marker-icon.my-labels").css({
-                  "font-size": 15,
-                  "font-weight":"bold",
-                  "-webkit-text-stroke": "0.6px",
-                  "letter-spacing": "0.8px"
-              });
-          } else {
-              $(".leaflet-marker-icon.my-labels").css({
-                  "font-size": 13,
-                  "font-weight":"bold",
-                  "-webkit-text-stroke": "0.6px",
-                  "letter-spacing": "0.8px"
-              });
-          }
-          if(!!this.UserMarkerObj) {
-              setTimeout(() => {
-                  this.UserMarkerObj.addTo(this.map);
-              }, 100);
-          }
-      });
-      this.leafletService
-          .addTiles(this.map, tilesOption)
-          .subscribe(async (res) => {
-              await this.drawSeatCoordinates();
-          });
+
+
+
+
+        try {
+            let initMapOption: LeafLetInit = {
+                mapId: "mapid",
+                minZoom: 10,
+                maxZoom: 14,
+                attributionControl: false,
+                setViewLatLng: [0.25, 0.5],
+                zoomLeavel: this.userZoomLevel,
+            };
+            let mapTiles = this.timelineData["activeUrl"];
+            let tilesOption: TilesOption = {
+                tileUrl: mapTiles,
+                maxZoom: 14,
+                attribution: "smartenspaces",
+                id: "smartenspaces",
+            };
+            if (this.map) {
+                this.leafletService.deleteMap(this.map);
+            }
+            this.map = L.map("mapid", {
+                minZoom: initMapOption.minZoom,
+                maxZoom: initMapOption.maxZoom,
+                attributionControl: initMapOption.attributionControl,
+            }).setView(
+                [initMapOption.setViewLatLng[0], initMapOption.setViewLatLng[1]],
+                initMapOption.zoomLeavel
+            );
+            this.map.on("zoomend", (res) => {
+                this.userZoomLevel = this.map.getZoom();
+                var newzoom = "" + 4 * this.map.getZoom() + "px";
+                if (this.map.getZoom() <= 10) {
+                    $(".leaflet-marker-icon.my-labels").css({
+                        "font-size": 0,
+                        "font-weight":"bold",
+                        "-webkit-text-stroke": "0.6px",
+                        "letter-spacing": "0.8px"
+                    });
+                } else if (this.map.getZoom() === 11) {
+                    $(".leaflet-marker-icon.my-labels").css({
+                        "font-size": 8,
+                        "font-weight":"bold",
+                        "-webkit-text-stroke": "0.6px",
+                        "letter-spacing": "0.8px"
+                    });
+                } else if (this.map.getZoom() >= 14) {
+                    $(".leaflet-marker-icon.my-labels").css({
+                        "font-size": 15,
+                        "font-weight":"bold",
+                        "-webkit-text-stroke": "0.6px",
+                        "letter-spacing": "0.8px"
+                    });
+                } else {
+                    $(".leaflet-marker-icon.my-labels").css({
+                        "font-size": 13,
+                        "font-weight":"bold",
+                        "-webkit-text-stroke": "0.6px",
+                        "letter-spacing": "0.8px"
+                    });
+                }
+                if(!!this.UserMarkerObj) {
+                    setTimeout(() => {
+                        this.UserMarkerObj.addTo(this.map);
+                    }, 100);
+                }
+            });
+            this.leafletService
+            .addTiles(this.map, tilesOption)
+            .subscribe(async (res) => {
+                await this.drawSeatCoordinates();
+            });
+            this.analysticSucess.emit(this.timelineData);
+        }catch (e) {
+            this.analysticError.emit(e);
+        }
     }
 
     drawSeatCoordinates = async () => {
