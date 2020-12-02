@@ -237,9 +237,15 @@ export class AppComponent {
       }
 
       showUserInfo:boolean = false;
+      selectedSeatInfo = [];
+      selectedSeatUniqueInfo = [];
       seatInfoCallBack(eve){
         console.log(eve);
         this.showUserInfo = true;
+
+        
+        this.selectedSeatInfo.push(eve.label);
+       
         this.userInfo = {
           name : "venkat",
           seatInfo : eve.label,
@@ -252,7 +258,9 @@ export class AppComponent {
       }
       //Space view end
 
-
+      deleteSeat(i){
+        this.selectedSeatInfo.splice(i, 1);
+      }
 
 
 

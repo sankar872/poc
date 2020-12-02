@@ -72,7 +72,7 @@
         </mat-tab>
 
         <mat-tab label="Desk Booking">
-            <app-desk-booking
+            <!-- <app-desk-booking
             *ngIf="activeLink == 'Desk Booking'"
             [bookingType]="bookingType"
             [mapData]="mapData"
@@ -85,7 +85,94 @@
             (createBooking) = "saveBooking($event)"
             (onSubmit) ="onSubmit($event)"
           >
-          </app-desk-booking>
+          </app-desk-booking> -->
+          
+        <ng-container *ngIf="activeLink == 'Desk Booking'">
+          <div class="row">
+            <div class="form-group col-3">
+              <label for="exampleFormControlSelect1">Select Buliding</label>
+              <select class="form-control">
+                <option>Buliding 1</option>
+                <option>Buliding 2</option>
+                <option>Buliding 3</option>
+                <option>Buliding 4</option>
+                <option>Buliding 5</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3">
+              <label for="exampleFormControlSelect1">Select Floor</label>
+              <select class="form-control" [(ngModel)]="selectedFloor" (change)="getFloorInfo($event)">
+                <option value="acc11" selected>Floor 1</option>
+                <option value="acc11">Floor 2</option>
+                <option value="acc11">Floor 3</option>
+                <option value="acc11">Floor 4</option>
+                <option value="acc11">Floor 5</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- <table  class="table table-dark">
+            <tr><th scope="row">User name</th><th>{{this.userInfo.name}}</th></tr>
+            <tr><th scope="row">Seat No</th><th>{{this.userInfo.seatInfo}}</th></tr>
+            <tr><th scope="row">Color</th><th>{{this.userInfo.color}}</th></tr>
+          </table> -->
+
+          <div class="row">
+            <div class="{{colMapPx}}">
+              <app-floorplan
+                *ngIf="activeLink == 'Desk Booking'"
+                [openFloorInfo] = "openFloor"
+                (openFloorSuccess) = "openFloorSuccess($event)"
+                (openFloorError) = "openFloorError($event)"
+                (seatInfoCallBack) = "seatInfoCallBack($event)"
+              >
+              </app-floorplan>
+            </div>
+            
+            <div  *ngIf="selectedSeatInfo.length>0">
+                <H3>Selected Seats</H3>
+                <div class="form-group ">
+                  <label for="exampleFormControlSelect1">Department</label>
+                  <select class="form-control">
+                    <option>Deptarment 1</option>
+                    <option>Department 2</option>
+                    <option>Department 3</option>
+                    <option>Department 4</option>
+                    <option>Department 5</option>
+                  </select>
+                </div>
+  
+  
+                <p *ngFor="let item of this.selectedSeatInfo; let i=index">
+                  {{item}} <button class="btn btn-primary" (click)="deleteSeat(i)">Delete</button>
+                </p>
+
+
+                <button class="btn btn-primary">Booknow</button>
+            </div>
+          </div>
+        </ng-container>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </mat-tab>
 
         <mat-tab label="Space View">
