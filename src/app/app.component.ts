@@ -294,13 +294,19 @@ export class AppComponent {
       }
 
       openFloorPlan(ele){
+        this.openFloor = [];
+        alert();
         ele['url'] = "http://google.com";
-        ele["seatMetaInfo"] = {};
+       // ele["seatMetaInfo"] = [];
+        ele["userMetaInfo"] = [];
         ele["floorId"] = "acc11";
-        // ele["seatMetaInfo"] = {
-        //   'seatId' : "A/088",
-        //   'color'  : "red"
-        // };
+        ele["seatMetaInfo"] = [{
+          'seatId' : "A/088",
+          'color'  : "red"
+        },{
+          'seatId' : "A/016",
+          'color'  : "red"
+        }];
 
         this.openFloor = [...this.openFloor,ele];
         this.mapView = "showMap";
@@ -314,12 +320,12 @@ export class AppComponent {
         let ele = {};
         if(pageType == 'spaceview') {
           ele['url'] = "http://google.com";
-          ele["seatMetaInfo"] = {};
+          ele["seatMetaInfo"] = [];
           ele["userMetaInfo"] = [];
           ele["floorId"] = this.selectedFloor;
         } else if(pageType == 'allocation') {
           ele['url'] = "http://google.com";
-          ele["seatMetaInfo"] = {};
+          ele["seatMetaInfo"] = [];
           ele["userMetaInfo"] = [{
             name: 'venkat',
             lastName: 'Nuni',
@@ -328,7 +334,7 @@ export class AppComponent {
           ele["floorId"] = this.selectedFloor;
         } else if(pageType == 'deskbooking') {
           ele['url'] = "http://google.com";
-          ele["seatMetaInfo"] = {};
+          ele["seatMetaInfo"] = [];
           ele["userMetaInfo"] = [];
           ele["floorId"] = this.selectedFloor;
         }

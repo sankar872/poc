@@ -156,7 +156,7 @@ export class FloorplanComponent implements OnInit {
             console.log(res);
               let response = res["floorDetails"];
               let floorMetaData = JSON.parse(response['floorMetaData']['floorMetaData']);
-              this.leaflet_url =  floorMetaData['tileUrl'].replace("http://localhost:8080","http://10.8.0.15:8080");
+              this.leaflet_url =  floorMetaData['tileUrl'].replace("http://localhost:8080","http://10.8.0.7:8080");
               this.leaflet_overlaydata = JSON.parse(response['floorMetaData']['entityAttributes'])['overlaydata'];
               this.leaflet_seatsGeojson = {};
               this.workstationListData = [];
@@ -374,9 +374,10 @@ export class FloorplanComponent implements OnInit {
 
     getWorkstationColor(seatId) {
       var colorData: any = {};
+      console.log(this.seatMetaDataInfo);
       for (const key in this.seatMetaDataInfo) {
-          if (this.seatMetaDataInfo[key].includes(seatId)) {
-              return this.seatMetaDataInfo['color'];
+          if (this.seatMetaDataInfo[key]['seatId'].includes(seatId)) {
+              return this.seatMetaDataInfo[key]['color'];
           }
       }
       if (!!colorData) {

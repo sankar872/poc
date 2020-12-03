@@ -69,7 +69,7 @@ export class OnboardingService {
     }
 
     getFloorPlanDetailsByFloorId(floorId) {
-        let url = "http://10.8.0.15:9988/webconversion/entityInfo/getByExternalFloorId?externalFloorId="+floorId;
+        let url = "http://10.8.0.7:9988/webconversion/entityInfo/getByExternalFloorId?externalFloorId="+floorId;
         //let url = this.BASEURL + `onboarding/floorOnboarding?zoneId=`+this.currentZone;
         return this.http.get(url,{});
     }
@@ -81,7 +81,7 @@ export class OnboardingService {
 
     uploadFile(file) {
         let url = `${this.upload_Url}webconversion/generateTilesUpdated`;
-        //let url = "http://10.8.0.153:9988/webconversion/generateTilesUpdated";
+        //let url = "http://10.8.0.73:9988/webconversion/generateTilesUpdated";
         const formData: FormData = new FormData();
         formData.append("file", file, file.name);
         formData.append("data",JSON.stringify({"floorId":"acc1"}));
@@ -94,7 +94,7 @@ export class OnboardingService {
     }
     uploadFloorPlanFile(file) {
         //let url = `${this.upload_Url}webconversion/generateTilesUpdated`;
-        let url = "http://10.8.0.15:9988/webconversion/upload";
+        let url = "http://10.8.0.7:9988/webconversion/upload";
         const formData: FormData = new FormData();
         formData.append("file", file, file.name);
         formData.append("data",JSON.stringify({"floorId":"acc11"}));
@@ -108,8 +108,8 @@ export class OnboardingService {
 
     getAllAttributes() {
         
-        let url = `http://10.8.0.151:9988/webconversion/entityInfo/getByExternalFloorId?externalFloorId=acc1`;
-        //let url = "http://10.8.0.153:9988/webconversion/generateTilesUpdated";
+        let url = `http://10.8.0.71:9988/webconversion/entityInfo/getByExternalFloorId?externalFloorId=acc1`;
+        //let url = "http://10.8.0.73:9988/webconversion/generateTilesUpdated";
         return this.http.get<any>(url);
     }
 }
