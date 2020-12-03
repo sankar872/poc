@@ -238,23 +238,31 @@ export class AppComponent {
 
       showUserInfo:boolean = false;
       selectedSeatInfo = [];
-      selectedSeatUniqueInfo = [];
       seatInfoCallBack(eve){
         console.log(eve);
-        this.showUserInfo = true;
 
+        if(this.activeLink == 'Onboard Space') {
+          
+        } else if(this.activeLink == 'Desk Booking') {
+          this.selectedSeatInfo.push(eve.label);
+          this.colMapPx = "col-9";
+          this.colUserPx = "col-3";
+        } else {
+          this.showUserInfo = true;
+          
         
-        this.selectedSeatInfo.push(eve.label);
-       
-        this.userInfo = {
-          name : "venkat",
-          seatInfo : eve.label,
-          phoneNumber: "1234567890",
-          department: "HR",
-          company: "SmartenSpace"
+          this.userInfo = {
+            name : "venkat",
+            seatInfo : eve.label,
+            phoneNumber: "1234567890",
+            department: "HR",
+            company: "SmartenSpace"
+          }
+
+          this.colMapPx = "col-9";
+          this.colUserPx = "col-3";
+          
         }
-        this.colMapPx = "col-9";
-        this.colUserPx = "col-3";
       }
       //Space view end
 
@@ -290,7 +298,7 @@ export class AppComponent {
         ele["seatMetaInfo"] = {};
         ele["floorId"] = "acc11";
         // ele["seatMetaInfo"] = {
-        //   'seatId' : "NQ/27/26",
+        //   'seatId' : "A/088",
         //   'color'  : "red"
         // };
 
@@ -300,13 +308,29 @@ export class AppComponent {
 
       colMapPx = "col-12";
       colUserPx = "";
-      getFloorInfo(eve) {
+      getFloorInfo(eve, pageType) {
         console.log(this.openFloor);
         this.openFloor = [];
         let ele = {};
-        ele['url'] = "http://google.com";
-        ele["seatMetaInfo"] = {};
-        ele["floorId"] = this.selectedFloor;
+        if(pageType == 'spaceview') {
+          ele['url'] = "http://google.com";
+          ele["seatMetaInfo"] = {};
+          ele["userMetaInfo"] = [];
+          ele["floorId"] = this.selectedFloor;
+        } else if(pageType == 'allocation') {
+          ele['url'] = "http://google.com";
+          ele["seatMetaInfo"] = {};
+          ele["userMetaInfo"] = [{
+            name: 'venkat',
+            seatId: 123
+          }];
+          ele["floorId"] = this.selectedFloor;
+        } else if(pageType == 'deskbooking') {
+          ele['url'] = "http://google.com";
+          ele["seatMetaInfo"] = {};
+          ele["userMetaInfo"] = [];
+          ele["floorId"] = this.selectedFloor;
+        }
         this.openFloor = [...this.openFloor,ele];
         //this.mapView = "showMap";
         this.showUserInfo = false;

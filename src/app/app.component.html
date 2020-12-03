@@ -102,7 +102,7 @@
 
             <div class="form-group col-3">
               <label for="exampleFormControlSelect1">Select Floor</label>
-              <select class="form-control" [(ngModel)]="selectedFloor" (change)="getFloorInfo($event)">
+              <select class="form-control" [(ngModel)]="selectedFloor" (change)="getFloorInfo($event,'deskbooking')">
                 <option value="acc11" selected>Floor 1</option>
                 <option value="acc11">Floor 2</option>
                 <option value="acc11">Floor 3</option>
@@ -197,7 +197,7 @@
 
               <div class="form-group col-3">
                 <label for="exampleFormControlSelect1">Select Floor</label>
-                <select class="form-control" [(ngModel)]="selectedFloor" (change)="getFloorInfo($event)">
+                <select class="form-control" [(ngModel)]="selectedFloor" (change)="getFloorInfo($event,'spaceview')">
                   <option value="acc11" selected>Floor 1</option>
                   <option value="acc11">Floor 2</option>
                   <option value="acc11">Floor 3</option>
@@ -254,7 +254,39 @@
         </mat-tab>
         <mat-tab label="Onboard Allocation">
 
-          <app-onboard-allocation 
+          <div class="row">
+            <div class="form-group col-3">
+              <label for="exampleFormControlSelect1">Select Buliding</label>
+              <select class="form-control">
+                <option>Buliding 1</option>
+                <option>Buliding 2</option>
+                <option>Buliding 3</option>
+                <option>Buliding 4</option>
+                <option>Buliding 5</option>
+              </select>
+            </div>
+
+            <div class="form-group col-3">
+              <label for="exampleFormControlSelect1">Select Floor</label>
+              <select class="form-control" [(ngModel)]="selectedFloor" (change)="getFloorInfo($event,'allocation')">
+                <option value="acc11" selected>Floor 1</option>
+                <option value="acc11">Floor 2</option>
+                <option value="acc11">Floor 3</option>
+                <option value="acc11">Floor 4</option>
+                <option value="acc11">Floor 5</option>
+              </select>
+            </div>
+          </div>
+
+          <app-floorplan
+              *ngIf="activeLink == 'Onboard Allocation'"
+              [openFloorInfo] = "openFloor"
+              (openFloorSuccess) = "openFloorSuccess($event)"
+              (openFloorError) = "openFloorError($event)"
+              (seatInfoCallBack) = "seatInfoCallBack($event)"
+          >
+          </app-floorplan>
+          <!-- <app-onboard-allocation 
           [allocationResult]="allocationResult" 
           [userInfoMap]="userInfoMap" 
           (paginationForAllocations)="paginationForAllocations($event)"
@@ -264,7 +296,7 @@
           (getSearchAllocations)="getSearchAllocations($event)"
           (deleteAllocation)="deleteAllocation($event)"
           (leafMapParent)="leafMapParent($event)"
-          *ngIf="flag"></app-onboard-allocation>
+          *ngIf="flag"></app-onboard-allocation> -->
 
         </mat-tab>
     </mat-tab-group>

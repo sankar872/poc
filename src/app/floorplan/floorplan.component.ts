@@ -71,6 +71,7 @@ export class FloorplanComponent implements OnInit {
     showTableData:boolean = false;
     fileName: string = 'Upload File';
     workstationList = [];
+    userMetaDataInfo = [];
     //floor-leaflet-data
     stepper = 'first';
     currentView = "";
@@ -107,6 +108,11 @@ export class FloorplanComponent implements OnInit {
         console.log(changes);
         this.currentView = 'mapView';
         this.seatMetaDataInfo = changes['openFloorInfo']['currentValue'][0]['seatMetaInfo'];
+        if(typeof changes['openFloorInfo']['currentValue'][0]['userMetaInfo'] != 'undefined' && changes['openFloorInfo']['currentValue'][0]['userMetaInfo'].length>0) {
+            this.userMetaDataInfo = changes['openFloorInfo']['currentValue'][0]['userMetaInfo'];
+        } else {
+            this.userMetaDataInfo = [];
+        }
         this.openMap(changes['openFloorInfo']['currentValue']);
       }
       
@@ -150,7 +156,7 @@ export class FloorplanComponent implements OnInit {
             console.log(res);
               let response = res["floorDetails"];
               let floorMetaData = JSON.parse(response['floorMetaData']['floorMetaData']);
-              this.leaflet_url =  floorMetaData['tileUrl'].replace("http://localhost:8080","http://10.8.0.2:8080");
+              this.leaflet_url =  floorMetaData['tileUrl'].replace("http://localhost:8080","http://10.8.0.19:8080");
               this.leaflet_overlaydata = JSON.parse(response['floorMetaData']['entityAttributes'])['overlaydata'];
               this.leaflet_seatsGeojson = {};
               this.workstationListData = [];
@@ -336,8 +342,35 @@ export class FloorplanComponent implements OnInit {
             polygonObj.addTo(this.map);
 
         }
+        //this.showUser()
     };
   
+    showUser= ()=> {
+        if(this.userMetaDataInfo.length>0) {
+            let data = this.userMetaDataInfo;
+            console.log(data);
+            let biggerArray = [];
+            let userSeat = data['entityInfo']['displayName'];
+            let vertices = this.leaflet_overlaydata[userSeat];
+            let polyArray = vertices.map(v => {
+                let newArr = [];
+                newArr = [...newArr, v.Y, v.X];
+                return newArr;
+            });
+            biggerArray=[...biggerArray, polyArray];
+            let reqObj = {
+                polygonCoordinates: biggerArray,
+                userData: data
+            }
+            this.leafletService.addUserInfoMarker(this.map, reqObj).subscribe(res => {
+                
+                //this.UserMarkerObj = res.marker;
+            })
+    
+
+        }
+    }
+
     getWorkstationColor(seatId) {
       var colorData: any = {};
       for (const key in this.seatMetaDataInfo) {
