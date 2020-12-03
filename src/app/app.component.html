@@ -146,7 +146,8 @@
 
 
               <p *ngFor="let item of this.selectedSeatInfo; let i=index">
-                {{item}} <button class="btn btn-primary" (click)="deleteSeat(i)">Delete</button>
+                {{item}}
+                <i class="fa fa-times" aria-hidden="true" (click)="deleteSeat(i)"></i>
               </p>
 
 
@@ -299,6 +300,68 @@
           </div>
           
           
+      </mat-tab>
+      <mat-tab label="Department View">
+        <!-- <app-onboard-analytics
+            *ngIf="activeLink == 'Space View'"
+            [displayAnalysticInfo] = "displayAnalysticMap"
+            (analysticSucess) = "analysticSucess($event)"
+            (analysticError) = "analysticError($event)"
+            (requestSearchSlide) = "requestForSearchSlide($event)"
+            ></app-onboard-analytics> -->
+        <div class="row">
+          <div class="form-group col-3">
+            <label for="exampleFormControlSelect1">Select Buliding</label>
+            <select class="form-control">
+              <option>Buliding 1</option>
+              <option>Buliding 2</option>
+              <option>Buliding 3</option>
+              <option>Buliding 4</option>
+              <option>Buliding 5</option>
+            </select>
+          </div>
+  
+          <div class="form-group col-3">
+            <label for="exampleFormControlSelect1">Select Floor</label>
+            <select class="form-control" [(ngModel)]="selectedFloor" (change)="getFloorInfo($event,'departmentview')">
+              <option value="acc11" selected>Floor 1</option>
+              <option value="acc11">Floor 2</option>
+              <option value="acc11">Floor 3</option>
+              <option value="acc11">Floor 4</option>
+              <option value="acc11">Floor 5</option>
+            </select>
+          </div>
+        </div>
+  
+        <!-- <table  class="table table-dark">
+              <tr><th scope="row">User name</th><th>{{this.userInfo.name}}</th></tr>
+              <tr><th scope="row">Seat No</th><th>{{this.userInfo.seatInfo}}</th></tr>
+              <tr><th scope="row">Color</th><th>{{this.userInfo.color}}</th></tr>
+            </table> -->
+  
+        <div class="row">
+          <div class="{{colMapPx}}">
+            <app-floorplan *ngIf="activeLink == 'Department View'" [openFloorInfo]="openFloor"
+              (openFloorSuccess)="deptFloorSuccess($event)" (openFloorError)="deptFloorError($event)"
+              (seatInfoCallBack)="seatInfoCallBack($event)">
+            </app-floorplan>
+          </div>
+          <div class="{{colUserPx}}">
+            <div class="row" *ngIf="showUserInfo">
+              <div class="w-90">
+                <!-- Profile widget -->
+                <div class="bg-white shadow rounded overflow-hidden">
+                  <div class="col d-flex pt-15 pb-15 " *ngFor="let legend of legendData">
+                    <div class="legend" [ngStyle]="{'background-color': legend.color}"></div>
+                    <div class="pl-15">{{legend.name}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+  
       </mat-tab>
       <mat-tab label="Onboard Allocation">
 

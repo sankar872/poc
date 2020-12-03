@@ -7,3 +7,31 @@
     background-size: cover;
     background-repeat: no-repeat
 }
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #0F1F54 !important;
+    border: none;
+}
+
+.legend{
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-top: 4px;
+}
+
+.pt-15{
+    padding-top: 15px;
+}
+
+.pb-15{
+    padding-bottom: 15px;
+}
+
+.pl-15{
+    padding-left: 15px;
+}
+
+.w-90{
+    width: 90%;
+}

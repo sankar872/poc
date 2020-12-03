@@ -44,6 +44,47 @@ export class AppComponent {
   currentBuildingId;
   currentFloorId;
 
+  legendData = [{
+    'color': "red",
+    'name': "Occupied"
+  },
+  {
+    'color': "green",
+    'name': "Available"
+  },
+  {
+    'color': "yellow",
+    'name': "Type 1"
+  },
+  {
+    'color': "pink",
+    'name': "Type 2"
+  },
+  {
+    'color': "blue",
+    'name': "Type 3"
+  },
+  {
+    'color': "orange",
+    'name': "Type 4"
+  },
+  {
+    'color': "maroon",
+    'name': "Type 5"
+  },
+  {
+    'color': "SkyBlue",
+    'name': "Type 6"
+  },
+  {
+    'color': "gray",
+    'name': "Type 7"
+  },
+  {
+    'color': "brown",
+    'name': "Type 8"
+  }];
+
   title = 'app';
   searchCriteria = [{'id':'1', 'name':'Department', 'searchKey': 'departmentName'},
                       {'id':'2', 'name':'User', 'searchKey': 'user'},
@@ -171,10 +212,7 @@ export class AppComponent {
       //Onboard space upload Floor end
 
 
-      openFloorSuccess(eve){
-        console.log(eve);
-        alert("opened Successfully");
-      }
+
 
       openFloorError(eve){
         console.log(eve);
@@ -277,7 +315,15 @@ export class AppComponent {
       }
 
 
+      openFloorSuccess(eve){
+        console.log(eve);
+        alert("opened Successfully");
+      }
 
+      deptFloorSuccess(event){
+        console.log(event);
+        alert('department view success');
+      }
 
 
 
@@ -342,7 +388,58 @@ export class AppComponent {
           ele["seatMetaInfo"] = [];
           ele["userMetaInfo"] = [];
           ele["floorId"] = this.selectedFloor;
-        }
+        } else if(pageType == 'departmentview') {
+          ele['url'] = "http://google.com";
+          ele["seatMetaInfo"] = [{
+            'seatId' : "A/088",
+            'color'  : "red"
+          },{
+            'seatId' : "A/016",
+            'color'  : "red"
+          },
+          {
+            'color': "red",
+            'seatId' : "A/076",
+          },
+          {
+            'color': "green",
+            'seatId' : "A/066",
+          },
+          {
+            'color': "yellow",
+            'seatId' : "A/056",
+          },
+          {
+            'color': "pink",
+            'seatId' : "A/046",
+          },
+          {
+            'color': "blue",
+            'seatId' : "A/036",
+          },
+          {
+            'color': "orange",
+            'seatId' : "A/028",
+          },
+          {
+            'color': "maroon",
+            'seatId' : "A/038",
+          },
+          {
+            'color': "SkyBlue",
+            'seatId' : "A/048",
+          },
+          {
+            'color': "gray",
+            'seatId' : "A/058",
+          },
+          {
+            'color': "brown",
+            'seatId' : "A/068",
+          }]
+          ele["userMetaInfo"] = [];
+          ele["floorId"] = this.selectedFloor;
+        } 
         this.openFloor = [...this.openFloor,ele];
         //this.mapView = "showMap";
         this.showUserInfo = false;
