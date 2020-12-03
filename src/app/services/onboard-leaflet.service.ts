@@ -225,14 +225,15 @@ export class LeafletService {
     addUserInfoMarker(map:L.Map, data, from=""):Observable<any> {
         let userInfo:any;
         let entityInfo:any;
+        console.log(data);
         if(!!from && from === "people") {
              userInfo = data["userData"]["user"];
              entityInfo = data["userData"]['currentRoster']["deskName"];
         }else {
-             userInfo = data['userData']["user"];
-             entityInfo = data['userData']["entityInfo"];
+             userInfo = data['userData'];
+             entityInfo = data['userData']["seatId"];
         }
-        if(userInfo != null && !!userInfo.imageUrl && userInfo.imageUrl != "" || userInfo != null && userInfo.firstName != null ){
+        if(userInfo != null && !!userInfo.imageUrl && userInfo.imageUrl != "" || userInfo != null && userInfo.name != null ){
         const markerHtmlStyles = `
         background-color: #132e74;
         display: block;
@@ -258,8 +259,8 @@ export class LeafletService {
                 <img class="d-block ui-w-30 rounded-circle w-100 h-100" src="${userInfo.imageUrl}">
                 </div>`
             }else {
-                if(userInfo.firstName != null){
-                    const fName = (userInfo.firstName.length)? userInfo.firstName.charAt(0): '';
+                if(userInfo.name != null){
+                    const fName = (userInfo.name.length)? userInfo.name.charAt(0): '';
                     const lName = (userInfo.lastName.length)? userInfo.lastName.charAt(0): '';
                     userImgStr +=`<span  class="text-uppercase btn btn-circle-dp legend-circle-dp col-2" >${fName}${lName}</span>`
                 }
@@ -274,7 +275,7 @@ export class LeafletService {
                 ${userImgStr}
                 <div class="map-label-info-container w-100 d-flex-col flex-lg-row align-items-center align-middle profile-notifications">
                     <div class="w-100  text-left user-name">${userInfo["name"]}</div>
-                    <div class="w-100  text-left desk-info">Desk:  ${(from === "people")? entityInfo : entityInfo["displayName"]}</div>    
+                    <div class="w-100  text-left desk-info">Desk:  ${(from === "people")? entityInfo : entityInfo}</div>    
                 </div>
             </div>
             <div class="map-label-arrow"></div>

@@ -322,7 +322,8 @@ export class AppComponent {
           ele["seatMetaInfo"] = {};
           ele["userMetaInfo"] = [{
             name: 'venkat',
-            seatId: 123
+            lastName: 'Nuni',
+            seatId: 'B/001'
           }];
           ele["floorId"] = this.selectedFloor;
         } else if(pageType == 'deskbooking') {

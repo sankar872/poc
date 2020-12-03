@@ -156,7 +156,7 @@ export class FloorplanComponent implements OnInit {
             console.log(res);
               let response = res["floorDetails"];
               let floorMetaData = JSON.parse(response['floorMetaData']['floorMetaData']);
-              this.leaflet_url =  floorMetaData['tileUrl'].replace("http://localhost:8080","http://10.8.0.19:8080");
+              this.leaflet_url =  floorMetaData['tileUrl'].replace("http://localhost:8080","http://10.8.0.15:8080");
               this.leaflet_overlaydata = JSON.parse(response['floorMetaData']['entityAttributes'])['overlaydata'];
               this.leaflet_seatsGeojson = {};
               this.workstationListData = [];
@@ -342,15 +342,16 @@ export class FloorplanComponent implements OnInit {
             polygonObj.addTo(this.map);
 
         }
-        //this.showUser()
+        this.showUser()
     };
   
     showUser= ()=> {
+        console.log(this.userMetaDataInfo);
         if(this.userMetaDataInfo.length>0) {
-            let data = this.userMetaDataInfo;
+            let data = this.userMetaDataInfo[0];
             console.log(data);
             let biggerArray = [];
-            let userSeat = data['entityInfo']['displayName'];
+            let userSeat = data['seatId'];
             let vertices = this.leaflet_overlaydata[userSeat];
             let polyArray = vertices.map(v => {
                 let newArr = [];
