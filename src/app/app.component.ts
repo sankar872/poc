@@ -252,12 +252,14 @@ export class AppComponent {
           
         
           this.userInfo = {
-            name : "venkat",
+            firstname : "venkat",
+            lastname  : "nuni",
             seatInfo : eve.label,
             phoneNumber: "1234567890",
             department: "HR",
-            company: "SmartenSpace"
-          }
+            company: "SmartenSpace",
+            city: "New York"
+          };
 
           this.colMapPx = "col-9";
           this.colUserPx = "col-3";
@@ -385,6 +387,10 @@ export class AppComponent {
 
 
       tabClick(eve){
+        this.openFloor = [];
+        this.mapView = 'listPage';
+        this.colMapPx = "col-12";
+        this.colUserPx = "";
         this.activeLink = eve.tab.textLabel;
         //if(eve.index)
       }
