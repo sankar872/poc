@@ -4,7 +4,7 @@ import {
     MatDialogRef,
     MAT_DIALOG_DATA,
 } from "@angular/material/dialog";
-import { MapActionIconsModalComponent } from "./modal/map-action-icons-modal.component";
+
 
 @Component({
     selector: 'map-action-icons',
@@ -53,16 +53,7 @@ export class MapActionIconsComponent {
         } else {
             height = "auto";
         }
-        const dialogRef = this.dialog.open(MapActionIconsModalComponent, {
-            width: width,
-            height: height,
-            panelClass: "ws-user-custom-info-dialog",
-            data: data,
-            disableClose: false,
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            if (!!result) {}
-        });
+       
     }
 
     isShowable(type) {
