@@ -252,8 +252,8 @@ export class AppComponent {
           
         
           this.userInfo = {
-            firstname : "venkat",
-            lastname  : "nuni",
+            firstname : "Venkat",
+            lastname  : "Nuni",
             seatInfo : eve.label,
             phoneNumber: "1234567890",
             department: "HR",
@@ -270,6 +270,10 @@ export class AppComponent {
 
       deleteSeat(i){
         this.selectedSeatInfo.splice(i, 1);
+        if(this.selectedSeatInfo.length == 0){
+          this.colMapPx = "col-12";
+          this.colUserPx = "";
+        }
       }
 
 
@@ -297,7 +301,6 @@ export class AppComponent {
 
       openFloorPlan(ele){
         this.openFloor = [];
-        alert();
         ele['url'] = "http://google.com";
        // ele["seatMetaInfo"] = [];
         ele["userMetaInfo"] = [];
@@ -388,9 +391,11 @@ export class AppComponent {
 
       tabClick(eve){
         this.openFloor = [];
+        this.selectedSeatInfo = [];
         this.mapView = 'listPage';
         this.colMapPx = "col-12";
         this.colUserPx = "";
+        this.showUserInfo = false;
         this.activeLink = eve.tab.textLabel;
         //if(eve.index)
       }

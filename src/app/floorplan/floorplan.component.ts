@@ -156,7 +156,7 @@ export class FloorplanComponent implements OnInit {
             console.log(res);
               let response = res["floorDetails"];
               let floorMetaData = JSON.parse(response['floorMetaData']['floorMetaData']);
-              this.leaflet_url =  floorMetaData['tileUrl'].replace("http://localhost:8080","http://10.8.0.21:8080");
+              this.leaflet_url =  floorMetaData['tileUrl'].replace("http://localhost:8080","http://10.8.0.9:8080");
               this.leaflet_overlaydata = JSON.parse(response['floorMetaData']['entityAttributes'])['overlaydata'];
               this.leaflet_seatsGeojson = {};
               this.workstationListData = [];
