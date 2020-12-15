@@ -213,7 +213,10 @@ export class AppComponent {
         console.log(eve);
         alert("Error in loading the leaflet map");
       }
-
+      deptFloorError(event){
+        console.log(event);
+        alert("Error in loading the department view");
+      }
       //Onboard space End
 
       //Space view start
