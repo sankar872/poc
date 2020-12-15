@@ -8,7 +8,6 @@ import {
     EventEmitter,
     Input,
 } from "@angular/core";
-import { ModuleidService } from "../../services/moduleid-service";
 import * as L from "leaflet";
 import * as $ from "jquery";
 import { BehaviorSubject } from "rxjs";
@@ -74,7 +73,6 @@ export class UserBookSeatComponent implements OnInit, OnDestroy, OnChanges {
     rightPanelDisplay:string = "none";
     pdfView:string = "FLOOR_PLAN";
     constructor(
-        private leafletService: ModuleidService
     ) {}
     ngOnInit() {}
     ngOnDestroy() {

@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { LoaderService } from "./shared/modules/loader/loader.service";
 import { OnboardingService } from "./services/onboarding.service";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
@@ -113,7 +112,6 @@ export class AppComponent {
 
   constructor(
           private onboardingService: OnboardingService,
-          public loaderService: LoaderService,
           private appService: AppService
       ) {
         this.$save.pipe(debounceTime(1000)).subscribe((event: any) => {
@@ -122,9 +120,6 @@ export class AppComponent {
       }
   
       ngOnInit() {
-          this.getAllocations(this.searchString, 0, 10);
-          this.getAllOnboardSpace();
-
           if(this.bookingType === "employee") {
             this.bookingObj["user"] = {
               id: 1,
@@ -285,6 +280,28 @@ export class AppComponent {
           this.selectedSeatInfo.push(eve.label);
           this.colMapPx = "col-9";
           this.colUserPx = "col-3";
+        } else if(this.activeLink  == 'Onboard Allocation') {
+          this.colMapPx = "col-9";
+          this.colUserPx = "col-3";
+          let exists = false;
+          for( var i = 0; i <  this.selectedSeatInfo.length; i++){ 
+            console.log(this.selectedSeatInfo[i],eve.label);
+            if ( this.selectedSeatInfo[i] === eve.label) { 
+        
+                this.selectedSeatInfo.splice(i, 1); 
+                 exists = true;
+            }
+        
+          }
+          if(exists == false){
+            this.selectedSeatInfo.push(eve.label);
+          }
+
+          console.log(this.selectedSeatInfo.length);
+          if(this.selectedSeatInfo.length == 0){
+            this.colMapPx = "col-12";
+            this.colUserPx = "";
+          }
         } else {
           this.showUserInfo = true;
           
@@ -325,20 +342,6 @@ export class AppComponent {
         alert('department view success');
       }
 
-
-
-
-
-
-
-
-
-
-
-      paginationForAllocations(name){
-        this.getAllocations("", name.pageIndex=0, name.pageSize)
-      }
-
       uploadFloorPlan(ele){
         ele['url'] = "http://google.com";
         document.getElementById('fileInput').click();
@@ -360,6 +363,7 @@ export class AppComponent {
         }];
 
         this.openFloor = [...this.openFloor,ele];
+        console.log(this.openFloor);
         this.mapView = "showMap";
       }
 
@@ -369,11 +373,13 @@ export class AppComponent {
         console.log(this.openFloor);
         this.openFloor = [];
         let ele = {};
+        
         if(pageType == 'spaceview') {
           ele['url'] = "http://google.com";
           ele["seatMetaInfo"] = [];
           ele["userMetaInfo"] = [];
           ele["floorId"] = this.selectedFloor;
+          ele['multiSelect'] = false;
         } else if(pageType == 'allocation') {
           ele['url'] = "http://google.com";
           ele["seatMetaInfo"] = [];
@@ -383,13 +389,16 @@ export class AppComponent {
             seatId: 'B/001'
           }];
           ele["floorId"] = this.selectedFloor;
+          ele['multiSelect'] = true;
         } else if(pageType == 'deskbooking') {
           ele['url'] = "http://google.com";
           ele["seatMetaInfo"] = [];
           ele["userMetaInfo"] = [];
           ele["floorId"] = this.selectedFloor;
+          ele['multiSelect'] = false;
         } else if(pageType == 'departmentview') {
           ele['url'] = "http://google.com";
+          ele['multiSelect'] = false;
           ele["seatMetaInfo"] = [{
             'seatId' : "A/088",
             'color'  : "red"
@@ -446,40 +455,11 @@ export class AppComponent {
        
       }
       
-      getSearchAllocations(name){
-        this.getAllocations(name.searchString, name.pageIndex, name.pageSize)
-      }
-
-      getAllAllocations(){
-        this.getAllocations(this.searchString, 0, 10);
-      }
-
-      getAllOnboardSpace(){
-        
-        this.onboardingService.onboardSpace()
-        .subscribe(res => {
-          this.onboardSpaceResult = res;
-          this.flag = true;
-        }, err => {
-        })
-      }
 
       deleteAllocation(eve){
         alert("will call delete API");
       }
       
-      getAllocations(searchString, pageIndex=0, pageSize=10){
-          const allocation$ = this.onboardingService.searchAllocation(
-              searchString,
-              pageSize,
-              pageIndex
-          )
-          .subscribe(res => {
-            this.allocationResult = res;
-            this.flag = true;
-          }, err => {
-          })
-      }
 
       userFileUpload(eve){
         

@@ -17,17 +17,17 @@ export class SearchMapUserComponent implements OnChanges {
     viewUserInMap = new EventEmitter()
     showloader:boolean = true;
     userListSubject$ =  new BehaviorSubject<any>(this);
-    userListAction$ = this.userListSubject$.asObservable();
+    //userListAction$ = this.userListSubject$.asObservable();
     searchInputSubject$ = new BehaviorSubject<string>('');
-    searchInputAction$ = this.searchInputSubject$.asObservable();
+    //searchInputAction$ = this.searchInputSubject$.asObservable();
     displayCount:number = 10;
     totalRecordSubject$ = new BehaviorSubject<number>(10);
-    totalRecordAction$ = this.totalRecordSubject$.asObservable()
+    //totalRecordAction$ = this.totalRecordSubject$.asObservable()
     // .subscribe(res => {
     //     this.displayCount = res;
     // });
     resultData = [];
-    users$ = combineLatest([this.userListAction$,this.searchInputAction$, this.totalRecordAction$]);
+    //users$ = combineLatest([this.userListAction$,this.searchInputAction$, this.totalRecordAction$]);
 
     constructor(
     ) {

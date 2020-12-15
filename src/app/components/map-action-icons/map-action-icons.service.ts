@@ -1,11 +1,7 @@
 import { Injectable, Inject, OnInit } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { environment } from "../../../environments/environment";
 import { Observable, Subject} from "rxjs";
 import { catchError, shareReplay, timeout, tap, filter, switchMap, map } from "rxjs/operators";
-import { ToastrService } from "ngx-toastr";
-import { ModuleidService } from "../../services/moduleid-service";
-import { CommonService } from '../../services/common-service.service';
 import { of } from "rxjs/observable/of";
 export interface User {
     value: number | string,
@@ -45,29 +41,17 @@ export class MapActionIconsService implements OnInit {
     )
     constructor(
         private http: HttpClient,
-        @Inject("BASE_URL") baseUrl: string,
-        private toastrService: ToastrService,
-        private moduleidService: ModuleidService,
-        private commonService: CommonService,
     ) {
-        this.BASEURL = baseUrl;
-        this.EMSURL = environment.BASE_URL;
-        this.upload_Url = environment.BASE_UPLOAD_URL;
-        this.moduleId = this.moduleidService.getModueId();
+        //this.BASEURL = baseUrl;
     }
 
     ngOnInit() {
-        this.currentZone = this.commonService.currentZone
-        .pipe(
-            filter(zone => Boolean(zone))
-        ).subscribe(res => {
-            this.currentZone = res;
-        })
+        
     }
 
-    public requestAutocompleteItems(text){
-        this.emsUserurl=`${this.EMSURL}ems/user/all?sortBy=createdAt&searchColumn=firstName&searchValue=${text}&page=${0}&size=${100000}`;
+    // public requestAutocompleteItems(text){
+    //     this.emsUserurl=`${this.EMSURL}ems/user/all?sortBy=createdAt&searchColumn=firstName&searchValue=${text}&page=${0}&size=${100000}`;
         
-        this.searchTermSubject$.next(text);
-    }
+    //     this.searchTermSubject$.next(text);
+    // }
 }

@@ -1,0 +1,11 @@
+{
+    "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+    "lib": {
+      "entryFile": "public_api.ts"
+    }, 
+    "whitelistedNonPeerDependencies": [
+      "angular","core-js","rxjs","zone.js","bootstrap","node-sass","jquery","leaflet","font-awesome", "fortawesome","ngx-toastr",
+      "highcharts","angular-highcharts","@types/highcharts","date-fns","@ng-bootstrap/ng-bootstrap","bootstrap","font-awesome",
+      "leaflet-draw","moment","moment-timezone","ng-pick-datetime", "ng5-slider", "ngx-moment", "zone.js", "@angular/common", "rxjs/Observable"
+    ]
+  }

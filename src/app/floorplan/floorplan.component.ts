@@ -13,7 +13,6 @@
     SimpleChanges,
     SimpleChange
   } from "@angular/core";
-  import { CommonService } from "../services/common-service.service";
   import { OnboardingService } from '../services/onboarding.service';
   //import { Route, Router, ActivatedRoute } from "@angular/router";
   import {
@@ -22,11 +21,6 @@
     MAT_DIALOG_DATA,
   } from "@angular/material/dialog";
   
-  //modal
-  import { LoaderService } from "../shared/modules/loader/loader.service";
-  import { ToastrService } from "ngx-toastr";
-  import { ConfirmationDialogService } from '../shared/confirmation-dialog/confirmation-dialog.service';
-  import { BehaviorSubject, Observable, Subject, pipe} from "rxjs";
   import {forkJoin} from "rxjs/observable/forkJoin";
   
   import { catchError, tap, filter, switchMap, mergeMap, startWith, debounceTime, map, takeUntil, distinctUntilChanged } from "rxjs/operators";
@@ -92,7 +86,6 @@ export class FloorplanComponent implements OnInit {
     seatMetaDataInfo = [];
     constructor(
       public dialog: MatDialog,
-      public toastrService: ToastrService,
       public onboardingService: OnboardingService,
       public leafletService: LeafletService
   ) {}
@@ -156,7 +149,7 @@ export class FloorplanComponent implements OnInit {
             console.log(res);
               let response = res["floorDetails"];
               let floorMetaData = JSON.parse(response['floorMetaData']['floorMetaData']);
-              this.leaflet_url =  floorMetaData['tileUrl'].replace("http://localhost:8080","http://10.8.0.3:8080");
+              this.leaflet_url =  floorMetaData['tileUrl'].replace("http://localhost:8080","http:// 10.8.0.42:8080");
               this.leaflet_overlaydata = JSON.parse(response['floorMetaData']['entityAttributes'])['overlaydata'];
               this.leaflet_seatsGeojson = {};
               this.workstationListData = [];
@@ -178,7 +171,8 @@ export class FloorplanComponent implements OnInit {
       formColorArray = () => {
         let currentContext = this;
         currentContext.workstationColorArr = [];
-        for (const [key, value] of Object.entries(this.leaflet_blockInfo)) {
+        
+        for (const [key, value] of (<any>Object).entries(this.leaflet_blockInfo)) {
             let colrObj: any = {};
             colrObj.key = key;
             colrObj.value =
@@ -251,7 +245,7 @@ export class FloorplanComponent implements OnInit {
           if (this.map.getZoom() >= 14) {
   
               $(".leaflet-tooltip.my-labels").css({
-                  "font-size": "20px",
+                  "font-size": "18px",
                   "-webkit-text-stroke": "1px black",
                   // "margin-top": "26px",
                   "font-family": "OpenSans",
@@ -260,7 +254,7 @@ export class FloorplanComponent implements OnInit {
               });
           } else if (this.map.getZoom() === 11) {
               $(".leaflet-tooltip.my-labels").css({
-                  "font-size": "5px",
+                  "font-size": "0px",
                   "-webkit-text-stroke": "0.8px black",
                   // "margin-top": "2px",
                   "font-family": "OpenSans",
@@ -269,7 +263,7 @@ export class FloorplanComponent implements OnInit {
               });
           } else if (this.map.getZoom() === 12) {
               $(".leaflet-tooltip.my-labels").css({
-                  "font-size": "10px",
+                  "font-size": "0px",
                   "-webkit-text-stroke": "0.8px black",
                   // "margin-top": "2px",
                   "font-family": "OpenSans",
@@ -278,7 +272,7 @@ export class FloorplanComponent implements OnInit {
               });
           } else if (this.map.getZoom() === 13) {
               $(".leaflet-tooltip.my-labels").css({
-                  "font-size": "13px",
+                  "font-size": "0px",
                   "-webkit-text-stroke": "1px black",
                   // "margin-top": "15px",
                   "font-family": "OpenSans",
@@ -299,6 +293,7 @@ export class FloorplanComponent implements OnInit {
   };
   
   drawpolygon = (ele) => {
+      console.log(ele);
         for (var a in this.leaflet_overlaydata) {
             let polygonArray = [];
             let biggerArray = [];
@@ -320,6 +315,8 @@ export class FloorplanComponent implements OnInit {
             };
             
 
+           
+           
 
 
             let polygonObj = L.polygon(polygonOption.polygonArray, {
@@ -328,6 +325,13 @@ export class FloorplanComponent implements OnInit {
                 fillOpacity: polygonOption.fillOpacity,
                 weight: polygonOption.weight,
             });
+
+            let leafIcon = L.Icon.extend({
+                options: {
+                  iconSize: [23,32]
+                }
+              });
+          
             if (!!polygonOption.label) {
                 polygonObj
                     .bindTooltip(`<span class="test">${polygonOption.label}</span>`, {
@@ -337,9 +341,31 @@ export class FloorplanComponent implements OnInit {
                     })
                     .openTooltip().on("click",(e) => {
                         this.seatInfoCallBack.emit(polygonOption);
+                        console.log(ele[0]['multiSelect']);
+                        if(typeof(ele[0]['multiSelect']) != 'undefined' && ele[0]['multiSelect']) {
+                            const greenIcon = new leafIcon({ iconUrl: '/assets/images/checked.svg' });
+                            //var mp = new L.Marker([e.latlng.lat, e.latlng.lng]).addTo(this.map);
+                           
+                            const layer = L.marker([e.latlng.lat, e.latlng.lng], { icon: greenIcon });
+                            if(this.map.hasLayer(layer)){
+                                this.seatInfoCallBack.emit(polygonOption);
+                                layer.remove();
+                                this.map.removeLayer(layer)
+                            }else{
+                                this.map.addLayer(layer)
+                                layer.addTo(this.map);
+                                layer.on("click", () => {
+                                    this.seatInfoCallBack.emit(polygonOption);
+                                    layer.remove();
+                                });
+                            }
+                        }
+                        
                     });
             }
             polygonObj.addTo(this.map);
+
+
 
         }
         this.showUser()
@@ -382,7 +408,7 @@ export class FloorplanComponent implements OnInit {
         }
       }
       if (!!colorData) {
-          return colorData.value;
+          return "green";
       }
     }
   

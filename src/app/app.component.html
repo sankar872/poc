@@ -19,6 +19,7 @@
             aria-describedby="inputGroupFileAddon01"
             (change)="onUploadAutocadFile($event)"
             autocomplete="off"
+            style="display:none"
           />
 
           <div class="col-12 text-left  p-0 m-0" *ngIf="mapView !== 'listPage'">
@@ -301,6 +302,7 @@
           
           
       </mat-tab>
+
       <mat-tab label="Department View">
         <!-- <app-onboard-analytics
             *ngIf="activeLink == 'Space View'"
@@ -363,6 +365,7 @@
   
   
       </mat-tab>
+      
       <mat-tab label="Onboard Allocation">
 
         <div class="row">
@@ -389,14 +392,48 @@
           </div>
         </div>
 
-        <app-floorplan
-            *ngIf="activeLink == 'Onboard Allocation'"
-            [openFloorInfo] = "openFloor"
-            (openFloorSuccess) = "openFloorSuccess($event)"
-            (openFloorError) = "openFloorError($event)"
-            (seatInfoCallBack) = "seatInfoCallBack($event)"
-        >
-        </app-floorplan>
+
+        <div class="row">
+            <div class="{{colMapPx}}">
+              <app-floorplan
+                  *ngIf="activeLink == 'Onboard Allocation'"
+                  [openFloorInfo] = "openFloor"
+                  (openFloorSuccess) = "openFloorSuccess($event)"
+                  (openFloorError) = "openFloorError($event)"
+                  (seatInfoCallBack) = "seatInfoCallBack($event)"
+              >
+              </app-floorplan>
+            </div>
+
+            <div  *ngIf="selectedSeatInfo.length>0" class="col-3 bg-white shadow rounded overflow-hidden">
+              <div style="padding:10px">
+                <H3>Selected Seats</H3>
+                <div class="form-group ">
+                  <label for="exampleFormControlSelect1">Department</label>
+                  <select class="form-control">
+                    <option>Deptarment 1</option>
+                    <option>Department 2</option>
+                    <option>Department 3</option>
+                    <option>Department 4</option>
+                    <option>Department 5</option>
+                  </select>
+                </div>
+  
+  
+                <p *ngFor="let item of this.selectedSeatInfo; let i=index">
+                  {{item}}
+                  <i class="fa fa-times" aria-hidden="true" (click)="deleteSeat(i)"></i>
+                </p>
+  
+  
+                <button class="btn btn-primary">Booknow</button>
+              </div>
+            </div>
+        </div>
+        
+
+
+
         <!-- <app-onboard-allocation 
         [allocationResult]="allocationResult" 
         [userInfoMap]="userInfoMap" 
